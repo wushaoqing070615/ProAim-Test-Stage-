@@ -1,0 +1,2039 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="theme-color" content="#0a0d14" />
+    <title>ProAim · 找到你的 CS2 灵敏度</title>
+    <style>
+      :root {
+        --bg: #0a0d14;
+        --panel: #111620;
+        --panel-light: #171d29;
+        --line: #27303d;
+        --text: #f3f6f8;
+        --muted: #909baa;
+        --accent: #d7f84a;
+        --accent-dark: #a8c51e;
+        --blue: #8ca7ff;
+        --radius: 20px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 82% 8%, rgba(140, 167, 255, .12), transparent 25rem),
+          radial-gradient(circle at 4% 36%, rgba(215, 248, 74, .06), transparent 23rem),
+          var(--bg);
+        font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+        line-height: 1.5;
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; }
+
+      .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+
+      header {
+        height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+      }
+
+      .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: .12em; }
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        position: relative;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 24px rgba(215, 248, 74, .25);
+      }
+      .brand-mark::before, .brand-mark::after { content: ""; position: absolute; background: var(--accent); }
+      .brand-mark::before { width: 2px; height: 40px; left: 11px; top: -8px; }
+      .brand-mark::after { width: 40px; height: 2px; left: -8px; top: 11px; }
+      .brand span { font-size: 15px; }
+      nav { display: flex; align-items: center; gap: 30px; color: var(--muted); font-size: 14px; }
+      nav a:hover { color: var(--text); }
+      .nav-cta { color: var(--accent); }
+
+      .hero {
+        min-height: 600px;
+        display: grid;
+        grid-template-columns: 1.05fr .95fr;
+        align-items: center;
+        gap: 70px;
+        padding: 72px 0 80px;
+      }
+      .eyebrow, .section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before { content: ""; width: 23px; height: 1px; background: var(--accent); }
+      h1 { max-width: 630px; margin: 20px 0 18px; font-size: clamp(42px, 6vw, 76px); line-height: 1.06; letter-spacing: -.06em; }
+      h1 em { color: var(--accent); font-style: normal; }
+      .hero-copy { max-width: 500px; color: var(--muted); font-size: 17px; }
+      .hero-actions { display: flex; align-items: center; gap: 18px; margin-top: 34px; }
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 20px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 800;
+        transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      }
+      .button:hover { transform: translateY(-2px); }
+      .button-primary { color: #10150b; background: var(--accent); box-shadow: 0 12px 30px rgba(215, 248, 74, .12); }
+      .button-primary:hover { background: #e3ff71; }
+      .button-ghost { color: var(--text); background: transparent; border-color: var(--line); }
+      .button-ghost:hover { border-color: #556174; background: rgba(255, 255, 255, .03); }
+      .hero-note { margin-top: 18px; color: #697483; font-size: 12px; }
+
+      .aim-visual { min-height: 410px; position: relative; display: grid; place-items: center; }
+      .aim-card {
+        width: min(410px, 100%);
+        aspect-ratio: 1;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #303b4d;
+        border-radius: 28px;
+        background:
+          linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+          #0f141e;
+        background-size: 42px 42px;
+        box-shadow: 0 35px 80px rgba(0, 0, 0, .35), inset 0 0 80px rgba(140, 167, 255, .05);
+        transform: rotate(3deg);
+      }
+      .aim-card::before {
+        content: "";
+        position: absolute;
+        inset: 18%;
+        border: 1px solid rgba(215, 248, 74, .12);
+        border-radius: 50%;
+        box-shadow: 0 0 0 32px rgba(215, 248, 74, .03), 0 0 0 64px rgba(215, 248, 74, .025);
+      }
+      .crosshair { width: 86px; height: 86px; position: relative; transform: rotate(-3deg); }
+      .crosshair::before, .crosshair::after { content: ""; position: absolute; background: var(--accent); box-shadow: 0 0 22px var(--accent); }
+      .crosshair::before { width: 2px; height: 100%; left: 42px; }
+      .crosshair::after { width: 100%; height: 2px; top: 42px; }
+      .crosshair-dot { width: 8px; height: 8px; position: absolute; inset: 0; margin: auto; border-radius: 50%; background: var(--accent); }
+      .target { position: absolute; width: 17px; height: 17px; border: 2px solid var(--blue); border-radius: 50%; box-shadow: 0 0 20px rgba(140, 167, 255, .35); }
+      .target::after { content: ""; position: absolute; width: 3px; height: 3px; inset: 0; margin: auto; border-radius: 50%; background: var(--blue); }
+      .target-one { left: 20%; top: 23%; }
+      .target-two { right: 17%; top: 31%; }
+      .target-three { left: 27%; bottom: 19%; }
+      .visual-label { position: absolute; left: -18px; bottom: 34px; padding: 12px 15px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: rgba(17, 22, 32, .88); font-size: 12px; transform: rotate(-3deg); }
+      .visual-label strong { display: block; margin-bottom: 3px; color: var(--text); font-size: 17px; }
+
+      .proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-bottom: 90px; }
+      .proof-item { padding: 20px 22px; border-top: 1px solid var(--line); }
+      .proof-value { display: block; color: var(--text); font-size: 28px; font-weight: 800; letter-spacing: -.04em; }
+      .proof-label { color: var(--muted); font-size: 13px; }
+
+      .section { padding: 88px 0; border-top: 1px solid rgba(255, 255, 255, .07); }
+      .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 34px; }
+      h2 { max-width: 520px; margin: 10px 0 0; font-size: clamp(30px, 4vw, 48px); line-height: 1.1; letter-spacing: -.05em; }
+      .section-description { max-width: 365px; margin: 0; color: var(--muted); font-size: 14px; }
+      .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .test-card {
+        min-height: 230px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(145deg, rgba(255,255,255,.04), transparent 60%), var(--panel);
+        transition: border-color .2s ease, transform .2s ease;
+      }
+      .test-card:hover { border-color: #4a586d; transform: translateY(-4px); }
+      .test-card-ready { border-color: rgba(215, 248, 74, .35); cursor: pointer; }
+      .test-card-ready:hover { border-color: var(--accent); box-shadow: 0 16px 38px rgba(215, 248, 74, .08); }
+      .test-top { display: flex; align-items: start; justify-content: space-between; gap: 14px; }
+      .test-icon { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #334052; border-radius: 11px; color: var(--accent); background: #18202c; font-size: 18px; }
+      .status { padding: 5px 8px; border-radius: 5px; color: #a6afbc; background: #1b222e; font-size: 11px; }
+      .test-card h3 { margin: 22px 0 7px; font-size: 19px; }
+      .test-card p { margin: 0; color: var(--muted); font-size: 13px; }
+      .test-meta { display: flex; gap: 14px; margin-top: 20px; color: #687383; font-size: 11px; }
+
+      .how-it-works { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+      .steps { display: grid; gap: 14px; }
+      .step { display: grid; grid-template-columns: 42px 1fr; gap: 17px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--line); }
+      .step-number { color: var(--accent); font: 700 13px/30px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .step h3 { margin: 0 0 5px; font-size: 16px; }
+      .step p { margin: 0; color: var(--muted); font-size: 13px; }
+      .settings-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+      .settings-card h3 { margin: 0 0 22px; font-size: 18px; }
+      .field { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+      .field:last-of-type { border-bottom: 0; }
+      .field-value { color: var(--text); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .field-input { width: 108px; padding: 7px 9px; border: 1px solid #344052; border-radius: 7px; color: var(--text); background: #171e2a; font: 700 13px ui-monospace, SFMono-Regular, Consolas, monospace; text-align: right; }
+      .field-input:focus { outline: 2px solid rgba(215, 248, 74, .35); border-color: var(--accent); }
+      .candidate-row { display: block; padding: 15px 0 0; color: var(--muted); font-size: 13px; }
+      .candidate-values { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+      .candidate-chip { padding: 5px 8px; border: 1px solid #344052; border-radius: 6px; color: #cbd3dd; background: #171e2a; font: 12px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .candidate-chip.current { border-color: rgba(215, 248, 74, .5); color: var(--accent); }
+      .micro-setting-note { margin: 18px 0 0; color: #8490a0; font-size: 12px; }
+      .settings-tip { margin: 22px 0 0; padding: 13px; border-left: 2px solid var(--accent); color: #aeb7c3; background: rgba(215, 248, 74, .05); font-size: 12px; }
+      .settings-prompt { margin: 16px 0 0; color: var(--accent); font-size: 13px; line-height: 1.65; }
+      .settings-start { width: 100%; margin-top: 14px; }
+      .settings-prompt[hidden], .settings-start[hidden] { display: none; }
+      .content-editing .settings-prompt[hidden] { display: block; }
+      .content-editing .settings-start[hidden] { display: inline-flex; }
+      .modal-open { overflow: hidden; }
+      .micro-modal { position: fixed; inset: 0; z-index: 10; display: none; place-items: center; padding: 22px; background: rgba(5, 7, 11, .86); backdrop-filter: blur(12px); }
+      .micro-modal.open { display: grid; }
+      .micro-panel { width: min(760px, 100%); max-height: min(760px, calc(100vh - 44px)); overflow: auto; padding: 28px; border: 1px solid #303b4d; border-radius: 24px; background: #101620; box-shadow: 0 30px 90px rgba(0, 0, 0, .5); }
+      .micro-header { display: flex; align-items: start; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+      .micro-header h2 { margin: 8px 0 0; font-size: clamp(25px, 4vw, 38px); }
+      .close-button { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: transparent; cursor: pointer; font-size: 20px; }
+      .close-button:hover { color: var(--text); border-color: #536176; }
+      .micro-intro { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
+      .micro-instruction, .micro-stats, .micro-result { padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+      .micro-instruction h3, .micro-result h3 { margin: 0 0 10px; font-size: 17px; }
+      .micro-instruction p { margin: 0; color: var(--muted); font-size: 14px; }
+      .micro-lock-error { margin-top: 12px !important; color: #ffb0b0 !important; font-size: 12px !important; }
+      .micro-lock-error[hidden] { display: none; }
+      .micro-instruction strong { color: var(--accent); }
+      .micro-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .micro-stat { padding: 12px; border-radius: 10px; background: #171e2a; }
+      .micro-stat-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; }
+      .micro-stat-value { color: var(--text); font: 700 19px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .micro-actions { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+      .micro-actions [hidden] { display: none; }
+      .micro-stage-wrap { display: none; }
+      .micro-stage-wrap.active { display: block; }
+      .micro-stage-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+      .micro-stage { width: 100%; height: 390px; position: relative; overflow: hidden; border: 1px solid #334052; border-radius: 16px; cursor: none; background: radial-gradient(circle at center, rgba(215,248,74,.05), transparent 28%), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #0b1018; background-size: auto, 36px 36px, 36px 36px; user-select: none; }
+      .micro-stage::after { content: "尽量用一次平滑移动完成瞄准"; position: absolute; left: 0; right: 0; bottom: 14px; color: #596575; text-align: center; font-size: 11px; pointer-events: none; }
+      .micro-target { width: 24px; height: 24px; position: absolute; border: 2px solid var(--accent); border-radius: 50%; background: rgba(215,248,74,.14); box-shadow: 0 0 0 7px rgba(215,248,74,.08), 0 0 24px rgba(215,248,74,.4); transform: translate(-50%, -50%); pointer-events: none; }
+      .micro-target::after { content: ""; width: 5px; height: 5px; position: absolute; inset: 0; margin: auto; border-radius: 50%; background: var(--accent); }
+      .track-stage::after { content: "持续跟随目标，不需要点击"; }
+      .track-target { width: 32px; height: 32px; position: absolute; z-index: 1; border: 2px solid var(--accent); border-radius: 50%; background: rgba(215,248,74,.2); box-shadow: 0 0 0 8px rgba(215,248,74,.07), 0 0 26px rgba(215,248,74,.35); transform: translate(-50%, -50%); pointer-events: none; }
+      .track-target::after { content: ""; width: 7px; height: 7px; position: absolute; inset: 0; margin: auto; border-radius: 50%; background: var(--accent); }
+      .candidate-break { position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; gap: 8px; color: var(--muted); background: rgba(8, 12, 18, .94); text-align: center; cursor: none; }
+      .candidate-break[hidden] { display: none; }
+      .candidate-break strong { color: var(--accent); font: 700 64px/1 ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .candidate-break p { margin: 0; color: var(--text); font-size: 14px; }
+      .micro-crosshair { width: 30px; height: 30px; position: absolute; z-index: 1; border: 1px solid var(--accent); border-radius: 50%; box-shadow: 0 0 15px rgba(215,248,74,.35); transform: translate(-50%, -50%); will-change: transform; pointer-events: none; }
+      .track-target, .advanced-target { will-change: transform; }
+      .micro-crosshair::before, .micro-crosshair::after { content: ""; position: absolute; background: var(--accent); }
+      .micro-crosshair::before { width: 1px; height: 44px; left: 14px; top: -8px; }
+      .micro-crosshair::after { width: 44px; height: 1px; left: -8px; top: 14px; }
+      .micro-crosshair-dot { width: 4px; height: 4px; position: absolute; inset: 0; margin: auto; border-radius: 50%; background: var(--accent); }
+      .micro-lock-hint { position: absolute; z-index: 2; left: 50%; top: 18%; padding: 10px 13px; border: 1px solid #405069; border-radius: 8px; color: #d8dee7; background: rgba(16,22,32,.9); transform: translate(-50%, -50%); font-size: 12px; pointer-events: none; text-align: center; white-space: nowrap; }
+      .micro-lock-hint.hidden { display: none; }
+      .micro-result { display: none; margin-top: 16px; }
+      .micro-result.show { display: block; }
+      .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+      .result-item { padding: 14px; border-radius: 10px; background: #171e2a; }
+      .result-item span { display: block; color: var(--muted); font-size: 11px; }
+      .result-item strong { display: block; margin-top: 4px; color: var(--accent); font-size: 22px; }
+      .result-tip { margin: 0; color: #aeb7c3; font-size: 13px; }
+      .candidate-results { display: grid; gap: 7px; margin: 16px 0; }
+      .candidate-result-row { display: grid; grid-template-columns: .55fr 1fr .8fr .8fr .8fr; gap: 8px; align-items: center; padding: 9px 11px; border-radius: 8px; color: var(--muted); background: #171e2a; font-size: 11px; }
+      .candidate-result-row strong { color: var(--text); font-size: 12px; }
+      .candidate-result-row.best { outline: 1px solid rgba(215, 248, 74, .45); color: var(--accent); }
+      .advanced-stage::after { content: attr(data-hint); }
+      .advanced-target { width: 30px; height: 30px; position: absolute; z-index: 1; border: 2px solid var(--accent); border-radius: 50%; background: rgba(215,248,74,.16); box-shadow: 0 0 0 8px rgba(215,248,74,.06), 0 0 25px rgba(215,248,74,.35); transform: translate(-50%, -50%); pointer-events: none; }
+      .advanced-target::after { content: ""; width: 6px; height: 6px; position: absolute; inset: 0; margin: auto; border-radius: 50%; background: var(--accent); }
+      .stop-lane { position: absolute; left: 8%; right: 8%; bottom: 42px; height: 2px; background: #334052; pointer-events: none; }
+      .stop-player { width: 24px; height: 24px; position: absolute; left: 50%; bottom: 30px; border: 2px solid var(--blue); transform: translateX(-50%) rotate(45deg); box-shadow: 0 0 18px rgba(140,167,255,.35); pointer-events: none; }
+      .advanced-cue { position: absolute; left: 50%; top: 20%; z-index: 2; padding: 9px 13px; border: 1px solid #405069; border-radius: 8px; color: var(--text); background: rgba(16,22,32,.9); transform: translate(-50%, -50%); font: 700 13px ui-monospace, SFMono-Regular, Consolas, monospace; pointer-events: none; }
+      .turn-arrow { position: absolute; left: 50%; top: 25%; color: var(--accent); transform: translate(-50%, -50%); font-size: 54px; font-weight: 800; pointer-events: none; }
+      .final-breakdown { display: grid; gap: 8px; margin: 16px 0; }
+      .final-row { display: grid; grid-template-columns: 1fr .7fr .5fr; gap: 10px; padding: 11px 13px; border-radius: 9px; color: var(--muted); background: #171e2a; font-size: 12px; }
+      .final-row strong { color: var(--text); }
+      .transition-panel { width: min(480px, 100%); padding: 42px 30px; text-align: center; }
+      .transition-panel h2 { margin: 12px auto 8px; }
+      .transition-panel p { margin: 0; color: var(--muted); font-size: 14px; }
+      .transition-count { display: block; margin: 28px 0 10px; color: var(--accent); font: 800 76px/1 ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .transition-panel .micro-actions { justify-content: center; }
+
+      footer { padding: 25px 0 35px; border-top: 1px solid rgba(255, 255, 255, .07); color: #667181; font-size: 12px; }
+      .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+      .toast { position: fixed; right: 22px; bottom: 22px; z-index: 2; max-width: 300px; padding: 13px 16px; border: 1px solid #43516a; border-radius: 10px; color: var(--text); background: #171e2a; box-shadow: 0 18px 40px rgba(0, 0, 0, .3); font-size: 13px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s, transform .2s; }
+      .toast.show { opacity: 1; transform: translateY(0); }
+      .content-editor { position: fixed; left: 18px; bottom: 18px; z-index: 20; width: min(420px, calc(100% - 36px)); padding: 14px; border: 1px solid #43516a; border-radius: 12px; background: rgba(17, 22, 32, .96); box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
+      .content-editor[hidden] { display: none; }
+      .content-editor-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+      .content-editor-top strong { color: var(--accent); font-size: 14px; }
+      .content-editor-status { color: var(--muted); font-size: 11px; }
+      .content-editor-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+      .content-editor button { min-height: 34px; padding: 0 11px; border: 1px solid #43516a; border-radius: 7px; color: var(--text); background: #171e2a; cursor: pointer; font-size: 12px; }
+      .content-editor button:hover { border-color: var(--accent); }
+      .content-editor button:first-child { color: #10150b; border-color: var(--accent); background: var(--accent); font-weight: 800; }
+      [data-edit-key][contenteditable] { cursor: text; outline: 1px dashed rgba(215, 248, 74, .6); outline-offset: 4px; }
+      [data-edit-key][contenteditable]:focus { outline: 2px solid var(--accent); background: rgba(215, 248, 74, .06); }
+
+      @media (max-width: 820px) {
+        .shell { width: min(100% - 28px, 600px); }
+        header { height: 70px; }
+        nav a:not(.nav-cta) { display: none; }
+        .hero { grid-template-columns: 1fr; gap: 35px; padding: 55px 0 60px; }
+        .aim-visual { min-height: 320px; }
+        .aim-card { width: min(330px, 88vw); }
+        .visual-label { left: 0; }
+        .proof, .test-grid { grid-template-columns: 1fr; }
+        .proof { padding-bottom: 55px; }
+        .section { padding: 60px 0; }
+        .section-heading, .how-it-works { grid-template-columns: 1fr; display: grid; gap: 20px; }
+        .section-heading { align-items: start; }
+        .how-it-works { gap: 40px; }
+        .micro-intro { grid-template-columns: 1fr; }
+        .micro-stage { height: 330px; }
+        .candidate-result-row { grid-template-columns: .5fr 1fr .8fr; }
+        .candidate-result-row span:nth-child(n+4) { display: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="#top" aria-label="ProAim 首页">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span data-edit-key="brand">ProAim</span>
+        </a>
+        <nav aria-label="主导航">
+          <a href="#tests" data-edit-key="nav-tests">测试项目</a>
+          <a href="#method" data-edit-key="nav-method">测试逻辑</a>
+          <a class="nav-cta" href="#tests" data-start-calibration>开始校准 <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <div class="eyebrow" data-edit-key="hero-eyebrow">CS2 AIM CALIBRATION</div>
+            <h1 id="hero-title"><span data-edit-key="hero-title">找到你的</span><br /><em data-edit-key="hero-title-accent">那一格灵敏度</em></h1>
+            <p class="hero-copy" data-edit-key="hero-copy">别再凭感觉反复换灵敏度。用一组短而有效的测试，找到更稳定、更舒服、真正适合你的瞄准设置。</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#tests" data-start-calibration>开始校准 <span aria-hidden="true">→</span></a>
+              <a class="button button-ghost" href="#method">了解方法</a>
+            </div>
+            <p class="hero-note" data-edit-key="hero-note">免费 · 无需注册 · 结果保存在本地浏览器</p>
+          </div>
+
+          <div class="aim-visual" aria-label="准星示意图">
+            <div class="aim-card">
+              <span class="target target-one"></span>
+              <span class="target target-two"></span>
+              <span class="target target-three"></span>
+              <div class="crosshair" aria-hidden="true"><span class="crosshair-dot"></span></div>
+            </div>
+            <div class="visual-label"><strong data-edit-key="visual-title">PRECISION FIRST</strong><span data-edit-key="visual-copy">稳定，比偶尔的高光更重要</span></div>
+          </div>
+        </section>
+
+        <section class="proof" aria-label="产品特点">
+          <div class="proof-item"><span class="proof-value" data-edit-key="proof-one-value">5</span><span class="proof-label" data-edit-key="proof-one-label">个核心测试维度</span></div>
+          <div class="proof-item"><span class="proof-value" data-edit-key="proof-two-value">3–5</span><span class="proof-label" data-edit-key="proof-two-label">组候选灵敏度对比</span></div>
+          <div class="proof-item"><span class="proof-value" data-edit-key="proof-three-value">0</span><span class="proof-label" data-edit-key="proof-three-label">需要安装的额外软件</span></div>
+        </section>
+
+        <section class="section" id="tests" aria-labelledby="tests-title">
+          <div class="section-heading">
+            <div>
+              <div class="section-kicker" data-edit-key="tests-kicker">01 / TEST SUITE</div>
+              <h2 id="tests-title"><span data-edit-key="tests-title-one">先测清楚，</span><br /><span data-edit-key="tests-title-two">再决定怎么调。</span></h2>
+            </div>
+            <p class="section-description" data-edit-key="tests-description">每个测试只回答一个问题。组合起来，才能看出你的灵敏度到底是太快、太慢，还是刚刚好。</p>
+          </div>
+
+          <div class="test-grid">
+            <article class="test-card test-card-ready" data-test="micro" role="button" tabindex="0" aria-label="开始微调控制测试">
+              <div>
+                <div class="test-top"><div class="test-icon">⌁</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">可体验</span></div>
+                <h3 data-edit-key="micro-card-title">微调控制</h3>
+                <p data-edit-key="micro-card-copy">检查远距离瞄准时，准星是否容易过瞄或抖动。</p>
+              </div>
+              <div class="test-meta"><span>精准度</span><span>约 2 分钟</span></div>
+            </article>
+            <article class="test-card test-card-ready" data-test="track" role="button" tabindex="0" aria-label="开始移动跟枪测试">
+              <div>
+                <div class="test-top"><div class="test-icon">◎</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">可体验</span></div>
+                <h3 data-edit-key="track-card-title">移动跟枪</h3>
+                <p data-edit-key="track-card-copy">观察跟随移动目标时，手部控制是否自然稳定。</p>
+              </div>
+              <div class="test-meta"><span>跟枪</span><span>约 2 分钟</span></div>
+            </article>
+            <article class="test-card test-card-ready" data-test="transfer" role="button" tabindex="0" aria-label="开始目标转移测试">
+              <div>
+                <div class="test-top"><div class="test-icon">＋</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">可体验</span></div>
+                <h3 data-edit-key="transfer-card-title">目标转移</h3>
+                <p data-edit-key="transfer-card-copy">对比快速甩枪与二次修正之间的平衡。</p>
+              </div>
+              <div class="test-meta"><span>反应速度</span><span>约 2 分钟</span></div>
+            </article>
+            <article class="test-card test-card-ready" data-test="stop" role="button" tabindex="0" aria-label="开始急停点射测试">
+              <div>
+                <div class="test-top"><div class="test-icon">↯</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">可体验</span></div>
+                <h3 data-edit-key="stop-card-title">急停点射</h3>
+                <p data-edit-key="stop-card-copy">模拟 CS2 常见的移动、急停和头线控制。</p>
+              </div>
+              <div class="test-meta"><span>急停</span><span>约 3 分钟</span></div>
+            </article>
+            <article class="test-card test-card-ready" data-test="turn" role="button" tabindex="0" aria-label="开始180度转身测试">
+              <div>
+                <div class="test-top"><div class="test-icon">↻</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">可体验</span></div>
+                <h3 data-edit-key="turn-card-title">180°转身</h3>
+                <p data-edit-key="turn-card-copy">确认大范围转身能力与小范围微调之间的取舍。</p>
+              </div>
+              <div class="test-meta"><span>空间感</span><span>约 1 分钟</span></div>
+            </article>
+            <article class="test-card test-card-ready" data-test="final" role="button" tabindex="0" aria-label="查看综合结果" style="border-color: rgba(215, 248, 74, .35); background: linear-gradient(145deg, rgba(215,248,74,.09), transparent 60%), var(--panel);">
+              <div>
+                <div class="test-top"><div class="test-icon">✦</div><span class="status" style="color: var(--accent); background: rgba(215,248,74,.1);">最终建议</span></div>
+                <h3 data-edit-key="final-card-title">综合结果</h3>
+                <p data-edit-key="final-card-copy">综合稳定性、速度和舒适度，输出你的推荐区间。</p>
+              </div>
+              <div class="test-meta"><span>综合分析</span><span>完成全部测试后生成</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="method" aria-labelledby="method-title">
+          <div class="how-it-works">
+            <div>
+              <div class="section-kicker" data-edit-key="method-kicker">02 / HOW IT WORKS</div>
+              <h2 id="method-title"><span data-edit-key="method-title-one">少一点猜测，</span><br /><span data-edit-key="method-title-two">多一点可重复。</span></h2>
+              <div class="steps">
+                <div class="step"><div class="step-number">01</div><div><h3 data-edit-key="step-one-title">输入你的基础设置</h3><p data-edit-key="step-one-copy">填写鼠标 DPI 和当前游戏灵敏度，先建立可比较的起点。</p></div></div>
+                <div class="step"><div class="step-number">02</div><div><h3 data-edit-key="step-two-title">测试几组候选值</h3><p data-edit-key="step-two-copy">系统建议相邻的几组灵敏度，让你比较真实的控制感。</p></div></div>
+                <div class="step"><div class="step-number">03</div><div><h3 data-edit-key="step-three-title">回到 CS2 验证</h3><p data-edit-key="step-three-copy">把推荐区间带回死斗或竞技，确认它能撑住真正的对局。</p></div></div>
+              </div>
+            </div>
+            <aside class="settings-card" aria-label="你的校准档案">
+              <h3 data-edit-key="settings-title">你的校准档案</h3>
+              <label class="field"><span>鼠标 DPI</span><input class="field-input" id="dpi-input" type="number" min="100" max="3200" step="50" value="0" inputmode="numeric" required /></label>
+              <label class="field"><span>CS2 灵敏度</span><input class="field-input" id="sens-input" type="number" min="0.01" max="10" step="0.01" value="0" inputmode="decimal" required /></label>
+              <div class="field"><span>当前 eDPI</span><span class="field-value" id="edpi-value" style="color: var(--accent);">0</span></div>
+              <div class="candidate-row">微调盲测组<div class="candidate-values" id="candidate-values"></div></div>
+              <p class="settings-tip" data-edit-key="settings-tip">五组候选值会随机测试，具体数值在完成后揭晓。</p>
+              <p class="settings-prompt" data-settings-prompt data-edit-key="settings-gate-prompt" role="status" aria-live="polite" hidden>请先输入你原先使用的鼠标 DPI 和 CS2 灵敏度，再开始微调控制。</p>
+              <button class="button button-primary settings-start" type="button" data-settings-start data-edit-key="settings-gate-button" hidden>保存设置并开始微调控制</button>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <div class="micro-modal" id="micro-modal" role="dialog" aria-modal="true" aria-labelledby="micro-title">
+        <div class="micro-panel">
+          <div class="micro-header">
+            <div><div class="section-kicker">MICRO CONTROL / 01</div><h2 id="micro-title">微调控制</h2></div>
+            <button class="close-button" type="button" data-close-micro aria-label="关闭测试">×</button>
+          </div>
+
+          <div class="micro-intro" data-micro-intro>
+            <div class="micro-instruction">
+              <h3>测试你的细节控制力</h3>
+              <p>系统会随机测试五组隐藏灵敏度。每组先完成 2 个适应目标，再记录 8 个正式目标；组间会有 2 秒准备时间。</p>
+              <p class="micro-lock-error" data-lock-error hidden>当前浏览器没有授权鼠标锁定，请使用最新版 Chrome 或 Edge 打开。</p>
+              <div class="micro-actions"><button class="button button-primary" type="button" data-start-micro>开始测试 <span aria-hidden="true">→</span></button></div>
+            </div>
+            <div class="micro-stats">
+              <div class="micro-stat"><span class="micro-stat-label">目标数量</span><span class="micro-stat-value">5 × 10</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">目标大小</span><span class="micro-stat-value">24 px</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">核心指标</span><span class="micro-stat-value">精度 / 轨迹</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">建议环境</span><span class="micro-stat-value">全屏</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">本轮基准</span><span class="micro-stat-value" data-micro-sens>1.00</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">候选值</span><span class="micro-stat-value" data-micro-candidates>完成后揭晓</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">视角换算</span><span class="micro-stat-value">m_yaw 0.022</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">输入模式</span><span class="micro-stat-value" data-input-mode>Raw / Lock</span></div>
+            </div>
+          </div>
+
+          <div class="micro-stage-wrap" data-micro-stage-wrap>
+            <div class="micro-stage-top"><span>盲测组 <strong data-candidate-label>A</strong>（<strong data-candidate-round>1</strong>/5） · <strong data-round-phase>适应 1/2</strong></span><span>本目标用时 <strong data-round-time>0.0s</strong></span></div>
+            <div class="micro-stage" data-micro-stage aria-label="CS2 风格微调控制测试区域">
+              <div class="micro-crosshair" data-micro-crosshair><span class="micro-crosshair-dot"></span></div>
+              <div class="micro-target" data-micro-target></div>
+              <div class="micro-lock-hint" data-lock-hint>点击测试区域锁定鼠标<br />请使用最新版 Chrome 或 Edge</div>
+              <div class="candidate-break" data-micro-break hidden aria-live="polite"><span>下一组灵敏度即将开始</span><strong data-break-count>2</strong><p>盲测组 <span data-break-group>B</span>（<span data-break-index>2</span>/5）</p></div>
+            </div>
+          </div>
+
+          <div class="micro-result" data-micro-result>
+            <h3>微调控制测试完成</h3>
+            <div class="result-grid">
+              <div class="result-item"><span>推荐灵敏度</span><strong data-result-sensitivity>—</strong></div>
+              <div class="result-item"><span>推荐 eDPI</span><strong data-result-edpi>—</strong></div>
+              <div class="result-item"><span>本项置信度</span><strong data-result-confidence>—</strong></div>
+            </div>
+            <div class="candidate-results" data-candidate-results aria-label="五组候选灵敏度成绩"></div>
+            <p class="result-tip" data-result-tip></p>
+            <p class="micro-setting-note" data-result-settings></p>
+            <div class="micro-actions"><button class="button button-primary" type="button" data-continue-micro>使用推荐值并继续</button><button class="button button-ghost" type="button" data-restore-micro hidden>使用原值并继续</button><button class="button button-ghost" type="button" data-restart-micro>再测一次</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="micro-modal" id="track-modal" role="dialog" aria-modal="true" aria-labelledby="track-title">
+        <div class="micro-panel">
+          <div class="micro-header">
+            <div><div class="section-kicker">TRACKING / 02</div><h2 id="track-title">移动跟枪</h2></div>
+            <button class="close-button" type="button" data-close-track aria-label="关闭测试">×</button>
+          </div>
+
+          <div class="micro-intro" data-track-intro>
+            <div class="micro-instruction">
+              <h3>测试持续跟随能力</h3>
+              <p>系统会随机测试五组隐藏灵敏度。每组适应 3 秒、正式记录 8 秒，组间休息 2 秒；移动鼠标让准星持续贴住目标。</p>
+              <p class="micro-lock-error" data-track-lock-error hidden>当前浏览器没有授权原始鼠标锁定，请使用最新版 Chrome 或 Edge 打开。</p>
+              <div class="micro-actions"><button class="button button-primary" type="button" data-start-track>开始测试 <span aria-hidden="true">→</span></button></div>
+            </div>
+            <div class="micro-stats">
+              <div class="micro-stat"><span class="micro-stat-label">盲测组数</span><span class="micro-stat-value">5</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">每组时长</span><span class="micro-stat-value">11 秒</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">核心指标</span><span class="micro-stat-value">贴合 / 滞后</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">目标轨迹</span><span class="micro-stat-value">完全一致</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">本轮基准</span><span class="micro-stat-value" data-track-sens>1.00</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">输入模式</span><span class="micro-stat-value" data-track-input-mode>Raw / Lock</span></div>
+            </div>
+          </div>
+
+          <div class="micro-stage-wrap" data-track-stage-wrap>
+            <div class="micro-stage-top"><span>盲测组 <strong data-track-label>A</strong>（<strong data-track-index>1</strong>/5） · <strong data-track-phase>适应 3.0s</strong></span><span>当前贴合 <strong data-track-live>—</strong></span></div>
+            <div class="micro-stage track-stage" data-track-stage aria-label="CS2 风格移动跟枪测试区域">
+              <div class="micro-crosshair" data-track-crosshair><span class="micro-crosshair-dot"></span></div>
+              <div class="track-target" data-track-target></div>
+              <div class="micro-lock-hint" data-track-lock-hint>点击测试区域锁定鼠标<br />请使用最新版 Chrome 或 Edge</div>
+              <div class="candidate-break" data-track-break hidden aria-live="polite"><span>下一组灵敏度即将开始</span><strong data-break-count>2</strong><p>盲测组 <span data-break-group>B</span>（<span data-break-index>2</span>/5）</p></div>
+            </div>
+          </div>
+
+          <div class="micro-result" data-track-result>
+            <h3>移动跟枪测试完成</h3>
+            <div class="result-grid">
+              <div class="result-item"><span>推荐灵敏度</span><strong data-track-result-sens>—</strong></div>
+              <div class="result-item"><span>推荐 eDPI</span><strong data-track-result-edpi>—</strong></div>
+              <div class="result-item"><span>本项置信度</span><strong data-track-confidence>—</strong></div>
+            </div>
+            <div class="candidate-results" data-track-results aria-label="五组跟枪候选成绩"></div>
+            <p class="result-tip" data-track-tip></p>
+            <p class="micro-setting-note" data-track-settings></p>
+            <div class="micro-actions"><button class="button button-primary" type="button" data-continue-track>使用推荐值并继续</button><button class="button button-ghost" type="button" data-restore-track hidden>使用原值并继续</button><button class="button button-ghost" type="button" data-restart-track>再测一次</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="micro-modal" id="advanced-modal" role="dialog" aria-modal="true" aria-labelledby="advanced-title">
+        <div class="micro-panel">
+          <div class="micro-header">
+            <div><div class="section-kicker" data-advanced-kicker>TEST / 03</div><h2 id="advanced-title" data-advanced-title>目标转移</h2></div>
+            <button class="close-button" type="button" data-close-advanced aria-label="关闭测试">×</button>
+          </div>
+          <div class="micro-intro" data-advanced-intro>
+            <div class="micro-instruction">
+              <h3 data-advanced-heading>测试快速目标切换</h3>
+              <p data-advanced-description></p>
+              <p class="micro-lock-error" data-advanced-lock-error hidden>当前浏览器没有授权原始鼠标锁定，请使用最新版 Chrome 或 Edge 打开。</p>
+              <div class="micro-actions"><button class="button button-primary" type="button" data-start-advanced>开始测试 <span aria-hidden="true">→</span></button></div>
+            </div>
+            <div class="micro-stats">
+              <div class="micro-stat"><span class="micro-stat-label">盲测组数</span><span class="micro-stat-value">5</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">每组次数</span><span class="micro-stat-value" data-advanced-rounds>10</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">核心指标</span><span class="micro-stat-value" data-advanced-metrics>速度 / 精度</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">组间准备</span><span class="micro-stat-value">2 秒</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">本轮基准</span><span class="micro-stat-value" data-advanced-sens>1.00</span></div>
+              <div class="micro-stat"><span class="micro-stat-label">输入模式</span><span class="micro-stat-value" data-advanced-input-mode>Raw / Lock</span></div>
+            </div>
+          </div>
+          <div class="micro-stage-wrap" data-advanced-stage-wrap>
+            <div class="micro-stage-top"><span>盲测组 <strong data-advanced-label>A</strong>（<strong data-advanced-index>1</strong>/5） · <strong data-advanced-phase>适应 1/2</strong></span><span data-advanced-live-label>本次用时 <strong data-advanced-live>0.0s</strong></span></div>
+            <div class="micro-stage advanced-stage" data-advanced-stage data-hint="点击目标完成本次测试" aria-label="瞄准测试区域">
+              <div class="micro-crosshair" data-advanced-crosshair><span class="micro-crosshair-dot"></span></div>
+              <div class="advanced-target" data-advanced-target></div>
+              <div class="stop-lane" data-stop-lane hidden></div><div class="stop-player" data-stop-player hidden></div>
+              <div class="advanced-cue" data-advanced-cue hidden></div><div class="turn-arrow" data-turn-arrow hidden>→</div>
+              <div class="micro-lock-hint" data-advanced-lock-hint>点击测试区域锁定鼠标<br />请使用最新版 Chrome 或 Edge</div>
+              <div class="candidate-break" data-advanced-break hidden aria-live="polite"><span>下一组灵敏度即将开始</span><strong data-break-count>2</strong><p>盲测组 <span data-break-group>B</span>（<span data-break-index>2</span>/5）</p></div>
+            </div>
+          </div>
+          <div class="micro-result" data-advanced-result>
+            <h3><span data-advanced-result-title>目标转移</span>测试完成</h3>
+            <div class="result-grid">
+              <div class="result-item"><span>推荐灵敏度</span><strong data-advanced-result-sens>—</strong></div>
+              <div class="result-item"><span>推荐 eDPI</span><strong data-advanced-result-edpi>—</strong></div>
+              <div class="result-item"><span>本项置信度</span><strong data-advanced-confidence>—</strong></div>
+            </div>
+            <div class="candidate-results" data-advanced-results></div>
+            <p class="result-tip" data-advanced-tip></p><p class="micro-setting-note" data-advanced-settings></p>
+            <div class="micro-actions"><button class="button button-primary" type="button" data-continue-advanced>使用推荐值并继续</button><button class="button button-ghost" type="button" data-exit-advanced hidden>退出</button><button class="button button-ghost" type="button" data-restore-advanced hidden>使用原值并继续</button><button class="button button-ghost" type="button" data-restart-advanced>再测一次</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="micro-modal" id="final-modal" role="dialog" aria-modal="true" aria-labelledby="final-title">
+        <div class="micro-panel">
+          <div class="micro-header"><div><div class="section-kicker">FINAL / 05 TESTS</div><h2 id="final-title">综合灵敏度建议</h2></div><button class="close-button" type="button" data-close-final aria-label="关闭结果">×</button></div>
+          <div class="micro-result show">
+            <h3>五项测试综合结果</h3>
+            <div class="result-grid"><div class="result-item"><span>推荐灵敏度</span><strong data-final-sens>—</strong></div><div class="result-item"><span>推荐 eDPI</span><strong data-final-edpi>—</strong></div><div class="result-item"><span>综合置信度</span><strong data-final-confidence>—</strong></div></div>
+            <div class="final-breakdown" data-final-breakdown></div>
+            <p class="result-tip" data-final-tip></p><p class="micro-setting-note" data-final-range></p>
+            <div class="micro-actions"><button class="button button-primary" type="button" data-close-final>应用结果并关闭</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="micro-modal" id="test-transition" role="dialog" aria-modal="true" aria-labelledby="transition-title">
+        <div class="micro-panel transition-panel">
+          <div class="section-kicker" data-transition-status>本项测试完成</div>
+          <h2 id="transition-title">下一项：<span data-transition-next>移动跟枪</span></h2>
+          <p data-transition-choice>推荐灵敏度已应用。</p>
+          <strong class="transition-count" data-transition-count aria-live="polite">3</strong>
+          <p>倒计时结束后自动进入下一项测试</p>
+          <div class="micro-actions"><button class="button button-ghost" type="button" data-cancel-transition>返回测试列表</button></div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-inner"><span data-edit-key="footer-copyright">© 2026 ProAim</span><span data-edit-key="footer-copy">为每一次微调，保留一点依据。</span></div>
+      </footer>
+    </div>
+    <aside class="content-editor" data-content-editor hidden>
+      <div class="content-editor-top"><strong>本机文本编辑</strong><span class="content-editor-status" data-editor-status aria-live="polite">已保存</span></div>
+      <div class="content-editor-actions">
+        <button type="button" data-editor-save>保存</button>
+        <button type="button" data-editor-undo>撤销未保存修改</button>
+        <button type="button" data-editor-reset>恢复默认</button>
+        <button type="button" data-editor-export>导出 JSON</button>
+        <button type="button" data-editor-exit>退出编辑</button>
+      </div>
+    </aside>
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const toast = document.querySelector('.toast');
+      const dpiInput = document.querySelector('#dpi-input');
+      const sensInput = document.querySelector('#sens-input');
+      const edpiValue = document.querySelector('#edpi-value');
+      const candidateValues = document.querySelector('#candidate-values');
+      const settingsCard = document.querySelector('.settings-card');
+      const settingsPrompt = document.querySelector('[data-settings-prompt]');
+      const settingsStartButton = document.querySelector('[data-settings-start]');
+      const microModal = document.querySelector('#micro-modal');
+      const microIntro = document.querySelector('[data-micro-intro]');
+      const microStageWrap = document.querySelector('[data-micro-stage-wrap]');
+      const microStage = document.querySelector('[data-micro-stage]');
+      const microTarget = document.querySelector('[data-micro-target]');
+      const microCrosshair = document.querySelector('[data-micro-crosshair]');
+      const microLockHint = document.querySelector('[data-lock-hint]');
+      const microLockError = document.querySelector('[data-lock-error]');
+      const microInputMode = document.querySelector('[data-input-mode]');
+      const microResult = document.querySelector('[data-micro-result]');
+      const restoreMicroButton = document.querySelector('[data-restore-micro]');
+      const microBreak = document.querySelector('[data-micro-break]');
+      const trackModal = document.querySelector('#track-modal');
+      const trackIntro = document.querySelector('[data-track-intro]');
+      const trackStageWrap = document.querySelector('[data-track-stage-wrap]');
+      const trackStage = document.querySelector('[data-track-stage]');
+      const trackCrosshair = document.querySelector('[data-track-crosshair]');
+      const trackTarget = document.querySelector('[data-track-target]');
+      const trackLockHint = document.querySelector('[data-track-lock-hint]');
+      const trackLockError = document.querySelector('[data-track-lock-error]');
+      const trackResult = document.querySelector('[data-track-result]');
+      const restoreTrackButton = document.querySelector('[data-restore-track]');
+      const trackBreak = document.querySelector('[data-track-break]');
+      const advancedModal = document.querySelector('#advanced-modal');
+      const advancedIntro = document.querySelector('[data-advanced-intro]');
+      const advancedStageWrap = document.querySelector('[data-advanced-stage-wrap]');
+      const advancedStage = document.querySelector('[data-advanced-stage]');
+      const advancedCrosshair = document.querySelector('[data-advanced-crosshair]');
+      const advancedTarget = document.querySelector('[data-advanced-target]');
+      const advancedCue = document.querySelector('[data-advanced-cue]');
+      const stopLane = document.querySelector('[data-stop-lane]');
+      const stopPlayer = document.querySelector('[data-stop-player]');
+      const turnArrow = document.querySelector('[data-turn-arrow]');
+      const advancedLockHint = document.querySelector('[data-advanced-lock-hint]');
+      const advancedLockError = document.querySelector('[data-advanced-lock-error]');
+      const advancedResult = document.querySelector('[data-advanced-result]');
+      const advancedBreak = document.querySelector('[data-advanced-break]');
+      const restoreAdvancedButton = document.querySelector('[data-restore-advanced]');
+      const finalModal = document.querySelector('#final-modal');
+      const testTransition = document.querySelector('#test-transition');
+      const totalCandidates = 5;
+      const candidateBreakSeconds = 2;
+      const crossTestTransitionSeconds = 3;
+      const totalRounds = 10;
+      const warmupRounds = 2;
+      const scoredRounds = totalRounds - warmupRounds;
+      const cs2MYaw = 0.022;
+      const horizontalFov = 90;
+      let candidateBlocks = [];
+      let candidateResults = [];
+      let targetSequence = [];
+      let candidateIndex = 0;
+      let currentMetrics;
+      let activeSensitivity = 1;
+      let microRound = 0;
+      let roundStartedAt = 0;
+      let roundTimer;
+      let microBreakTimer;
+      let crosshairX = 0.5;
+      let crosshairY = 0.5;
+      let targetX = 0.5;
+      let targetY = 0.5;
+      let roundStartX = 0.5;
+      let roundStartY = 0.5;
+      let roundOvershot = false;
+      let roundPath = 0;
+      let roundDistance = 0;
+      let roundDifficulty = 0;
+      let roundCorrections = 0;
+      let lastProgress = 0;
+      let lastProgressDelta = 0;
+      const trackWarmupMs = 3000;
+      const trackScoredMs = 8000;
+      // ponytail: screen-space strafe proxy; use distance-aware 3D projection only if playtests need it.
+      const stopAimDrift = 0.45;
+      const stopReactionLeadSeconds = 0.22;
+      const stopCueTolerance = 34;
+      const getStopAimDrift = (velocity, seconds) => velocity * seconds * stopAimDrift;
+      let trackCandidates = [];
+      let trackResults = [];
+      let trackIndex = 0;
+      let trackMetrics;
+      let trackSensitivity = 1;
+      let trackCrosshairX = 0.5;
+      let trackCrosshairY = 0.5;
+      let trackStartedAt = 0;
+      let trackFrame;
+      let trackBreakTimer;
+      let previousTrackTarget = { x: 0.5, y: 0.5 };
+      const advancedConfigs = {
+        transfer: { title: '目标转移', kicker: 'TARGET SWITCH / 03', heading: '测试速度与首发精度', description: '五组隐藏灵敏度使用完全相同的远距离目标序列。每组 2 次适应、8 次正式记录，组间准备 2 秒。', rounds: 10, warmups: 2, metrics: '速度 / 修正', hint: '一次甩向目标并点击，首发命中更重要', key: 'proaim-transfer-result', weight: 0.30, reasonDown: '较低候选减少了甩枪过冲和二次修正', reasonUp: '较高候选缩短了目标转移时间且首发精度稳定', reasonStay: '当前值在转移速度与首发精度之间最平衡' },
+        stop: { title: '急停点射', kicker: 'COUNTER-STRAFE / 04', heading: '测试急停后的首发控制', description: '按住 A 或 D 横移并将准心带向同侧目标；系统会按接近速度提前提示急停，随后反向点按、补偿定位并射击。每组 2 次适应、6 次正式记录。', rounds: 8, warmups: 2, metrics: '急停 / 首发', hint: '边横移边瞄准；看到急停提示后反向点按并完成补偿', key: 'proaim-stop-result', weight: 0.15, reasonDown: '较低候选让急停后的首发定位更稳定', reasonUp: '较高候选改善了急停后的目标到达速度', reasonStay: '当前值在急停时机与首发精度之间最平衡' },
+        turn: { title: '180°转身', kicker: '180 TURN / 05', heading: '测试大范围转身能力', description: '根据箭头方向一次转向身后的目标并点击。每组 2 次适应、6 次正式记录；本项主要作为低灵敏度下限检查。', rounds: 8, warmups: 2, metrics: '角度 / 单次移动', hint: '按箭头方向转身，让目标进入准星后点击', key: 'proaim-turn-result', weight: 0.05, reasonDown: '较低候选的 180°落点更准确且没有增加额外修正', reasonUp: '较高候选更容易一次完成 180°转身', reasonStay: '当前值已能兼顾大范围转身和落点控制' }
+      };
+      let advancedMode = 'transfer';
+      let advancedConfig = advancedConfigs.transfer;
+      let advancedBaseSettings;
+      let advancedCandidates = [];
+      let advancedResults = [];
+      let advancedSequence = [];
+      let advancedIndex = 0;
+      let advancedRound = 0;
+      let advancedMetrics;
+      let advancedSensitivity = 1;
+      let advancedX = 0.5;
+      let advancedY = 0.5;
+      let advancedTargetX = 0.5;
+      let advancedTargetY = 0.5;
+      let advancedStartX = 0.5;
+      let advancedStartY = 0.5;
+      let advancedPath = 0;
+      let advancedCorrections = 0;
+      let advancedLastProgress = 0;
+      let advancedLastDelta = 0;
+      let advancedRoundStartedAt = 0;
+      let advancedLastFrame = 0;
+      let advancedFrame;
+      let advancedBreakTimer;
+      let advancedYaw = 0;
+      let advancedTurnPath = 0;
+      let advancedTurnDirection = 0;
+      let stopPosition = 0.5;
+      let stopVelocity = 0;
+      let stopMoved = 0;
+      let stopReadyAt = 0;
+      let stopCountered = false;
+      let stopReleased = false;
+      let stopPreviousAimError = NaN;
+      let stopAimClosingSpeed = 0;
+      let stopDirection = 0;
+      let transitionTimer;
+      let transitionAbort;
+      let lastRawMoveAt = 0;
+      let pendingTestMode = 'micro';
+      const pressedKeys = new Set();
+      const stageSizes = new WeakMap();
+
+      const formatSensitivity = (value) => Number(value).toFixed(2);
+      const getSettings = () => {
+        const dpi = Number(dpiInput.value);
+        const sensitivity = Number(sensInput.value);
+        if (!Number.isFinite(dpi) || dpi < 100 || dpi > 3200 || !Number.isFinite(sensitivity) || sensitivity < 0.01 || sensitivity > 10) return null;
+        return { dpi: Math.round(dpi), sensitivity };
+      };
+      const getCandidates = (sensitivity) => Array.from({ length: totalCandidates }, (_, index) => Math.max(0.01, sensitivity * Math.pow(1.12, index - 2)));
+      const renderSettings = () => {
+        const settings = getSettings();
+        if (!settings) {
+          dpiInput.setAttribute('aria-invalid', 'true');
+          sensInput.setAttribute('aria-invalid', 'true');
+          edpiValue.textContent = '0';
+          candidateValues.replaceChildren();
+          return null;
+        }
+        dpiInput.removeAttribute('aria-invalid');
+        sensInput.removeAttribute('aria-invalid');
+        const candidates = getCandidates(settings.sensitivity);
+        edpiValue.textContent = Math.round(settings.dpi * settings.sensitivity);
+        candidateValues.replaceChildren(...candidates.map((value, index) => {
+          const chip = document.createElement('span');
+          chip.className = 'candidate-chip';
+          chip.textContent = String.fromCharCode(65 + index);
+          return chip;
+        }));
+        localStorage.setItem('proaim-settings', JSON.stringify(settings));
+        document.querySelector('[data-micro-sens]').textContent = formatSensitivity(settings.sensitivity);
+        document.querySelector('[data-track-sens]').textContent = formatSensitivity(settings.sensitivity);
+        return settings;
+      };
+
+      dpiInput.value = '0';
+      sensInput.value = '0';
+      localStorage.removeItem('proaim-settings');
+      renderSettings();
+      [dpiInput, sensInput].forEach((input) => input.addEventListener('input', renderSettings));
+
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(showToast.timer);
+        if (!editingContent) showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800);
+      };
+
+      const getStageSize = (stage) => {
+        const cached = stageSizes.get(stage);
+        if (cached) return cached;
+        const size = { width: stage.clientWidth, height: stage.clientHeight };
+        if (size.width && size.height) stageSizes.set(stage, size);
+        return size;
+      };
+      const positionAimElement = (element, x, y, stage) => {
+        const { width, height } = getStageSize(stage);
+        if (!width || !height) {
+          element.style.left = (x * 100) + '%';
+          element.style.top = (y * 100) + '%';
+          element.style.transform = 'translate(-50%, -50%)';
+          return;
+        }
+        element.style.left = '0';
+        element.style.top = '0';
+        element.style.transform = 'translate3d(' + (x * width) + 'px,' + (y * height) + 'px,0) translate(-50%,-50%)';
+      };
+      window.addEventListener('resize', () => [microStage, trackStage, advancedStage].forEach((stage) => stageSizes.delete(stage)));
+
+      const startCandidateBreak = (element, index, onDone) => {
+        let remaining = candidateBreakSeconds;
+        element.querySelector('[data-break-count]').textContent = remaining;
+        element.querySelector('[data-break-group]').textContent = String.fromCharCode(65 + index);
+        element.querySelector('[data-break-index]').textContent = index + 1;
+        element.hidden = false;
+        const timer = setInterval(() => {
+          remaining -= 1;
+          element.querySelector('[data-break-count]').textContent = remaining;
+          if (remaining > 0) return;
+          clearInterval(timer);
+          element.hidden = true;
+          onDone();
+        }, 1000);
+        return timer;
+      };
+
+      const setCrosshair = (x, y) => {
+        crosshairX = Math.max(0.06, Math.min(0.94, x));
+        crosshairY = Math.max(0.08, Math.min(0.86, y));
+        positionAimElement(microCrosshair, crosshairX, crosshairY, microStage);
+      };
+
+      const placeMicroTarget = (index) => {
+        ({ x: targetX, y: targetY } = targetSequence[index]);
+        microTarget.style.left = (targetX * 100) + '%';
+        microTarget.style.top = (targetY * 100) + '%';
+      };
+
+      const updatePointerLockUI = () => {
+        const locked = document.pointerLockElement === microStage;
+        microStage.classList.toggle('locked', locked);
+        microLockHint.classList.toggle('hidden', locked);
+        microInputMode.textContent = locked ? 'Raw / Lock' : 'Pointer Lock required';
+      };
+
+      const requestPointerLock = (stage) => {
+        if (!stage.requestPointerLock) {
+          showToast('当前浏览器不支持鼠标锁定，请使用最新版 Chrome 或 Edge。');
+          return Promise.resolve(false);
+        }
+        return new Promise((resolve) => {
+          let settled = false;
+          const finishRequest = (success) => {
+            if (settled) return;
+            settled = true;
+            document.removeEventListener('pointerlockchange', handleChange);
+            document.removeEventListener('pointerlockerror', handleError);
+            resolve(success);
+          };
+          const handleChange = () => {
+            if (document.pointerLockElement === stage) finishRequest(true);
+          };
+          const handleError = () => finishRequest(false);
+          document.addEventListener('pointerlockchange', handleChange);
+          document.addEventListener('pointerlockerror', handleError);
+          setTimeout(() => finishRequest(document.pointerLockElement === stage), 800);
+          try {
+            const request = stage.requestPointerLock({ unadjustedMovement: true });
+            if (request && typeof request.catch === 'function') request.catch(handleError);
+          } catch {
+            handleError();
+          }
+        });
+      };
+
+      const requestMicroPointerLock = () => requestPointerLock(microStage);
+
+      const handleMicroMouseMove = (event) => {
+        if (!currentMetrics || microRound <= 0 || document.pointerLockElement !== microStage) return;
+        const { width, height } = getStageSize(microStage);
+        const aspect = width / height;
+        const verticalFov = 2 * Math.atan(Math.tan((horizontalFov * Math.PI / 180) / 2) / aspect) * 180 / Math.PI;
+        const previousX = crosshairX;
+        const previousY = crosshairY;
+        setCrosshair(
+          crosshairX + (event.movementX * activeSensitivity * cs2MYaw) / horizontalFov,
+          crosshairY + (event.movementY * activeSensitivity * cs2MYaw) / verticalFov
+        );
+        roundPath += Math.hypot((crosshairX - previousX) * width, (crosshairY - previousY) * height);
+        const aimX = targetX - roundStartX;
+        const aimY = targetY - roundStartY;
+        const aimLengthSquared = aimX * aimX + aimY * aimY;
+        const progress = aimLengthSquared && ((crosshairX - roundStartX) * aimX + (crosshairY - roundStartY) * aimY) / aimLengthSquared;
+        if (!roundOvershot && progress > 1.08) {
+          roundOvershot = true;
+        }
+        const progressDelta = progress - lastProgress;
+        if (Math.abs(progressDelta) > 0.015) {
+          if (lastProgressDelta && progressDelta * lastProgressDelta < 0) roundCorrections += 1;
+          lastProgressDelta = progressDelta;
+          lastProgress = progress;
+        }
+      };
+
+      const isTargetUnderCrosshair = () => {
+        const rect = microStage.getBoundingClientRect();
+        const targetRect = microTarget.getBoundingClientRect();
+        const targetX = (targetRect.left + targetRect.width / 2 - rect.left) / rect.width;
+        const targetY = (targetRect.top + targetRect.height / 2 - rect.top) / rect.height;
+        return Math.hypot((crosshairX - targetX) * rect.width, (crosshairY - targetY) * rect.height) <= 22;
+      };
+
+      const resetMicro = () => {
+        cancelAnimationFrame(roundTimer);
+        clearInterval(microBreakTimer);
+        if (document.pointerLockElement === microStage) document.exitPointerLock();
+        updatePointerLockUI();
+        candidateBlocks = [];
+        candidateResults = [];
+        targetSequence = [];
+        candidateIndex = 0;
+        currentMetrics = null;
+        microRound = 0;
+        microBreak.hidden = true;
+        setCrosshair(0.5, 0.5);
+        microIntro.style.display = '';
+        microStageWrap.classList.remove('active');
+        microResult.classList.remove('show');
+      };
+
+      const showMicroLockError = () => {
+        microLockError.hidden = false;
+      };
+
+      const openMicro = () => {
+        if (!renderSettings()) {
+          showToast('请先填写有效的 DPI 和 CS2 灵敏度。');
+          sensInput.focus();
+          return;
+        }
+        resetMicro();
+        microLockError.hidden = true;
+        microModal.classList.add('open');
+        document.body.classList.add('modal-open');
+        document.querySelector('[data-start-micro]').focus();
+      };
+
+      const closeMicro = () => {
+        microModal.classList.remove('open');
+        document.body.classList.remove('modal-open');
+        resetMicro();
+      };
+
+      const median = (values) => {
+        const sorted = [...values].sort((a, b) => a - b);
+        const middle = Math.floor(sorted.length / 2);
+        return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+      };
+
+      const normalizeHigher = (values, value) => {
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        return max === min ? 100 : ((value - min) / (max - min)) * 100;
+      };
+
+      const normalizeLower = (values, value) => {
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        return max === min ? 100 : ((max - value) / (max - min)) * 100;
+      };
+
+      const finishMicro = () => {
+        cancelAnimationFrame(roundTimer);
+        if (document.pointerLockElement === microStage) document.exitPointerLock();
+        updatePointerLockUI();
+        const settings = getSettings();
+        const summaries = candidateResults.map((result) => {
+          const time = median(result.times);
+          const correctionAverage = result.corrections.reduce((sum, value) => sum + value, 0) / scoredRounds;
+          const consistency = median(result.times.map((value) => Math.abs(value - time))) / time;
+          return {
+            ...result,
+            accuracy: Math.round((result.hits / (result.hits + result.misses)) * 100),
+            time,
+            throughput: median(result.throughputs),
+            efficiency: median(result.efficiencies),
+            overshootRate: result.overshoots / scoredRounds,
+            correctionAverage,
+            consistency
+          };
+        });
+        const throughputs = summaries.map((item) => item.throughput);
+        summaries.forEach((item) => {
+          const controlScore = 100 * (1 - Math.min(1, item.overshootRate * 0.65 + Math.min(1, item.correctionAverage / 2) * 0.35));
+          const consistencyScore = 100 * (1 - Math.min(1, item.consistency / 0.5));
+          item.score = Math.round(item.accuracy * 0.4 + normalizeHigher(throughputs, item.throughput) * 0.25 + item.efficiency * 15 + controlScore * 0.1 + consistencyScore * 0.1);
+        });
+        const ranked = [...summaries].sort((a, b) => b.score - a.score);
+        const best = ranked[0];
+        const gap = best.score - ranked[1].score;
+        const confidence = gap >= 6 && best.accuracy >= 90 ? '高' : gap >= 2 ? '中' : '低';
+        const plateau = summaries.filter((item) => item.score >= best.score - 3).sort((a, b) => a.sensitivity - b.sensitivity);
+        const ratio = best.sensitivity / settings.sensitivity;
+        const change = Math.round(Math.abs(ratio - 1) * 100);
+        const direction = ratio < 0.97 ? '降低' : ratio > 1.03 ? '提高' : '保持';
+        const appliedSensitivity = Number(formatSensitivity(best.sensitivity));
+        const reason = direction === '降低'
+          ? '较低候选减少了过瞄和反向修正'
+          : direction === '提高'
+            ? '较高候选缩短了到达时间，同时没有增加过瞄'
+            : '当前值仍处于本项测试的稳定区间';
+        document.querySelector('[data-result-sensitivity]').textContent = formatSensitivity(appliedSensitivity);
+        document.querySelector('[data-result-edpi]').textContent = Math.round(appliedSensitivity * settings.dpi);
+        document.querySelector('[data-result-confidence]').textContent = confidence;
+        document.querySelector('[data-result-tip]').textContent = reason + '。' + (direction === '保持'
+          ? '后续测试继续使用当前灵敏度。'
+          : '已自动' + direction + '约 ' + change + '%，后续测试将使用灵敏度 ' + formatSensitivity(appliedSensitivity) + '。');
+        document.querySelector('[data-result-settings]').textContent = '本项稳定区间：' + formatSensitivity(plateau[0].sensitivity) + '–' + formatSensitivity(plateau.at(-1).sensitivity) + '；微调控制将占最终综合结果的 30%。';
+        const rows = summaries.sort((a, b) => a.sensitivity - b.sensitivity).map((item) => {
+          const row = document.createElement('div');
+          row.className = 'candidate-result-row' + (item === best ? ' best' : '');
+          [item.label, '灵敏度 ' + formatSensitivity(item.sensitivity), item.score + ' 分', item.accuracy + '% 命中', item.overshoots + '/' + scoredRounds + ' 过瞄'].forEach((text, index) => {
+            const cell = document.createElement(index === 1 ? 'strong' : 'span');
+            cell.textContent = text;
+            row.append(cell);
+          });
+          return row;
+        });
+        document.querySelector('[data-candidate-results]').replaceChildren(...rows);
+        restoreMicroButton.hidden = direction === '保持';
+        restoreMicroButton.dataset.sensitivity = settings.sensitivity;
+        restoreMicroButton.textContent = '使用原值 ' + formatSensitivity(settings.sensitivity) + ' 并继续';
+        sensInput.value = formatSensitivity(appliedSensitivity);
+        renderSettings();
+        localStorage.setItem('proaim-micro-result', JSON.stringify({ sensitivity: appliedSensitivity, previousSensitivity: settings.sensitivity, score: best.score, confidence, range: [plateau[0].sensitivity, plateau.at(-1).sensitivity] }));
+        markTestComplete('micro');
+        microStageWrap.classList.remove('active');
+        microResult.classList.add('show');
+      };
+
+      console.assert(median([3, 1, 2]) === 2 && Math.abs(getCandidates(1)[2] - 1) < 0.001 && candidateBreakSeconds === 2, 'Calibration check failed');
+
+      const nextMicroTarget = () => {
+        cancelAnimationFrame(roundTimer);
+        if (microRound >= totalRounds) {
+          candidateResults.push(currentMetrics);
+          candidateIndex += 1;
+          if (candidateIndex >= totalCandidates) finishMicro();
+          else {
+            currentMetrics = null;
+            microRound = 0;
+            microBreakTimer = startCandidateBreak(microBreak, candidateIndex, startCandidate);
+          }
+          return;
+        }
+        microRound += 1;
+        placeMicroTarget(microRound - 1);
+        roundStartX = crosshairX;
+        roundStartY = crosshairY;
+        roundOvershot = false;
+        roundPath = 0;
+        roundCorrections = 0;
+        lastProgress = 0;
+        lastProgressDelta = 0;
+        roundDistance = Math.hypot((targetX - roundStartX) * microStage.clientWidth, (targetY - roundStartY) * microStage.clientHeight);
+        roundDifficulty = Math.log2(roundDistance / 24 + 1);
+        roundStartedAt = performance.now();
+        document.querySelector('[data-round-phase]').textContent = microRound <= warmupRounds
+          ? '适应 ' + microRound + '/' + warmupRounds
+          : '正式 ' + (microRound - warmupRounds) + '/' + scoredRounds;
+        document.querySelector('[data-round-time]').textContent = '0.0s';
+        const updateTimer = () => {
+          document.querySelector('[data-round-time]').textContent = ((performance.now() - roundStartedAt) / 1000).toFixed(1) + 's';
+          roundTimer = requestAnimationFrame(updateTimer);
+        };
+        roundTimer = requestAnimationFrame(updateTimer);
+      };
+
+      const startCandidate = () => {
+        const block = candidateBlocks[candidateIndex];
+        activeSensitivity = block.sensitivity;
+        currentMetrics = { ...block, hits: 0, misses: 0, overshoots: 0, times: [], throughputs: [], efficiencies: [], corrections: [] };
+        microRound = 0;
+        setCrosshair(0.5, 0.5);
+        document.querySelector('[data-candidate-label]').textContent = block.label;
+        document.querySelector('[data-candidate-round]').textContent = candidateIndex + 1;
+        nextMicroTarget();
+      };
+
+      const startMicro = async () => {
+        const settings = getSettings();
+        resetMicro();
+        targetSequence = Array.from({ length: totalRounds }, () => ({ x: 0.2 + Math.random() * 0.6, y: 0.2 + Math.random() * 0.52 }));
+        candidateBlocks = getCandidates(settings.sensitivity)
+          .sort(() => Math.random() - 0.5)
+          .map((sensitivity, index) => ({ sensitivity, label: String.fromCharCode(65 + index) }));
+        microIntro.style.display = 'none';
+        microStageWrap.classList.add('active');
+        const locked = await requestMicroPointerLock();
+        if (!locked) {
+          resetMicro();
+          showMicroLockError();
+          showToast('无法锁定鼠标，本测试需要使用最新版 Chrome 或 Edge。');
+          return;
+        }
+        microLockError.hidden = true;
+        startCandidate();
+      };
+
+      microStage.addEventListener('click', (event) => {
+        if (microRound <= 0 || microRound > totalRounds) return;
+        if (document.pointerLockElement !== microStage) {
+          requestMicroPointerLock().then((locked) => {
+            if (!locked) {
+              resetMicro();
+              showMicroLockError();
+              showToast('无法锁定鼠标，本测试需要使用最新版 Chrome 或 Edge。');
+            }
+          });
+          return;
+        }
+        if (isTargetUnderCrosshair()) {
+          if (microRound > warmupRounds) {
+            const time = performance.now() - roundStartedAt;
+            currentMetrics.hits += 1;
+            currentMetrics.times.push(time);
+            currentMetrics.throughputs.push(roundDifficulty / (time / 1000));
+            currentMetrics.efficiencies.push(Math.min(1, roundDistance / Math.max(roundDistance, roundPath)));
+            currentMetrics.corrections.push(roundCorrections);
+            if (roundOvershot) currentMetrics.overshoots += 1;
+          }
+          setCrosshair(targetX, targetY);
+          nextMicroTarget();
+        } else if (microRound > warmupRounds) currentMetrics.misses += 1;
+      });
+
+      const setTrackCrosshair = (x, y) => {
+        trackCrosshairX = Math.max(0.05, Math.min(0.95, x));
+        trackCrosshairY = Math.max(0.08, Math.min(0.92, y));
+        positionAimElement(trackCrosshair, trackCrosshairX, trackCrosshairY, trackStage);
+      };
+
+      const getTrackTargetPosition = (seconds) => ({
+        x: 0.5 + Math.sin(seconds * 1.45) * 0.24 + Math.sin(seconds * 3.2) * 0.055,
+        y: 0.5 + Math.sin(seconds * 1.9 + 0.8) * 0.17
+      });
+
+      const updateTrackPointerLockUI = () => {
+        const locked = document.pointerLockElement === trackStage;
+        trackLockHint.classList.toggle('hidden', locked);
+        document.querySelector('[data-track-input-mode]').textContent = locked ? 'Raw / Lock' : 'Pointer Lock required';
+      };
+
+      const resetTrack = () => {
+        cancelAnimationFrame(trackFrame);
+        clearInterval(trackBreakTimer);
+        if (document.pointerLockElement === trackStage) document.exitPointerLock();
+        trackCandidates = [];
+        trackResults = [];
+        trackIndex = 0;
+        trackMetrics = null;
+        trackBreak.hidden = true;
+        setTrackCrosshair(0.5, 0.5);
+        trackIntro.style.display = '';
+        trackStageWrap.classList.remove('active');
+        trackResult.classList.remove('show');
+        updateTrackPointerLockUI();
+      };
+
+      const openTrack = () => {
+        if (!renderSettings()) {
+          showToast('请先填写有效的 DPI 和 CS2 灵敏度。');
+          return;
+        }
+        resetTrack();
+        trackLockError.hidden = true;
+        trackModal.classList.add('open');
+        document.body.classList.add('modal-open');
+        document.querySelector('[data-start-track]').focus();
+      };
+
+      const closeTrack = () => {
+        trackModal.classList.remove('open');
+        document.body.classList.remove('modal-open');
+        resetTrack();
+      };
+
+      const handleTrackMouseMove = (event) => {
+        if (!trackMetrics || document.pointerLockElement !== trackStage) return;
+        const { width, height } = getStageSize(trackStage);
+        const aspect = width / height;
+        const verticalFov = 2 * Math.atan(Math.tan((horizontalFov * Math.PI / 180) / 2) / aspect) * 180 / Math.PI;
+        setTrackCrosshair(
+          trackCrosshairX + (event.movementX * trackSensitivity * cs2MYaw) / horizontalFov,
+          trackCrosshairY + (event.movementY * trackSensitivity * cs2MYaw) / verticalFov
+        );
+      };
+
+      const runTrackFrame = (now) => {
+        if (!trackMetrics || document.pointerLockElement !== trackStage) return;
+        const elapsed = now - trackStartedAt;
+        if (elapsed >= trackWarmupMs + trackScoredMs) {
+          trackResults.push(trackMetrics);
+          trackIndex += 1;
+          if (trackIndex >= totalCandidates) finishTrack();
+          else {
+            trackMetrics = null;
+            trackBreakTimer = startCandidateBreak(trackBreak, trackIndex, startTrackCandidate);
+          }
+          return;
+        }
+        const position = getTrackTargetPosition(elapsed / 1000);
+        positionAimElement(trackTarget, position.x, position.y, trackStage);
+        const scored = elapsed >= trackWarmupMs;
+        if (scored) {
+          const { width, height } = getStageSize(trackStage);
+          const dx = (trackCrosshairX - position.x) * width;
+          const dy = (trackCrosshairY - position.y) * height;
+          const error = Math.hypot(dx, dy);
+          const vx = (position.x - previousTrackTarget.x) * width;
+          const vy = (position.y - previousTrackTarget.y) * height;
+          const speed = Math.hypot(vx, vy);
+          trackMetrics.samples += 1;
+          trackMetrics.onTarget += error <= 22 ? 1 : 0;
+          trackMetrics.errorSum += error;
+          trackMetrics.errorSquareSum += error * error;
+          if (speed) trackMetrics.lagSum += Math.max(0, -(dx * vx + dy * vy) / speed);
+        }
+        previousTrackTarget = position;
+        document.querySelector('[data-track-phase]').textContent = scored
+          ? '正式 ' + Math.max(0, (trackWarmupMs + trackScoredMs - elapsed) / 1000).toFixed(1) + 's'
+          : '适应 ' + ((trackWarmupMs - elapsed) / 1000).toFixed(1) + 's';
+        document.querySelector('[data-track-live]').textContent = trackMetrics.samples
+          ? Math.round(trackMetrics.onTarget / trackMetrics.samples * 100) + '%'
+          : '—';
+        trackFrame = requestAnimationFrame(runTrackFrame);
+      };
+
+      const startTrackCandidate = () => {
+        const block = trackCandidates[trackIndex];
+        trackSensitivity = block.sensitivity;
+        trackMetrics = { ...block, samples: 0, onTarget: 0, errorSum: 0, errorSquareSum: 0, lagSum: 0 };
+        setTrackCrosshair(0.5, 0.5);
+        previousTrackTarget = getTrackTargetPosition(0);
+        document.querySelector('[data-track-label]').textContent = block.label;
+        document.querySelector('[data-track-index]').textContent = trackIndex + 1;
+        document.querySelector('[data-track-live]').textContent = '—';
+        trackStartedAt = performance.now();
+        trackFrame = requestAnimationFrame(runTrackFrame);
+      };
+
+      const finishTrack = () => {
+        cancelAnimationFrame(trackFrame);
+        trackMetrics = null;
+        trackStageWrap.classList.remove('active');
+        if (document.pointerLockElement === trackStage) document.exitPointerLock();
+        updateTrackPointerLockUI();
+        const settings = getSettings();
+        const summaries = trackResults.map((result) => {
+          const error = result.errorSum / result.samples;
+          return {
+            ...result,
+            onTargetRate: Math.round(result.onTarget / result.samples * 100),
+            error,
+            lag: result.lagSum / result.samples,
+            jitter: Math.sqrt(Math.max(0, result.errorSquareSum / result.samples - error * error))
+          };
+        });
+        const errors = summaries.map((item) => item.error);
+        const lags = summaries.map((item) => item.lag);
+        const jitters = summaries.map((item) => item.jitter);
+        summaries.forEach((item) => {
+          item.score = Math.round(item.onTargetRate * 0.45 + normalizeLower(errors, item.error) * 0.25 + normalizeLower(lags, item.lag) * 0.2 + normalizeLower(jitters, item.jitter) * 0.1);
+        });
+        const ranked = [...summaries].sort((a, b) => b.score - a.score);
+        const best = ranked[0];
+        const gap = best.score - ranked[1].score;
+        const confidence = gap >= 6 && best.onTargetRate >= 60 ? '高' : gap >= 2 ? '中' : '低';
+        const plateau = summaries.filter((item) => item.score >= best.score - 3).sort((a, b) => a.sensitivity - b.sensitivity);
+        const ratio = best.sensitivity / settings.sensitivity;
+        const change = Math.round(Math.abs(ratio - 1) * 100);
+        const direction = ratio < 0.97 ? '降低' : ratio > 1.03 ? '提高' : '保持';
+        const appliedSensitivity = Number(formatSensitivity(best.sensitivity));
+        const reason = direction === '降低'
+          ? '较低候选减少了目标两侧振荡和跟枪抖动'
+          : direction === '提高'
+            ? '较高候选降低了跟随滞后，且没有增加轨迹波动'
+            : '当前值在贴合率、滞后和抖动之间最平衡';
+        document.querySelector('[data-track-result-sens]').textContent = formatSensitivity(appliedSensitivity);
+        document.querySelector('[data-track-result-edpi]').textContent = Math.round(appliedSensitivity * settings.dpi);
+        document.querySelector('[data-track-confidence]').textContent = confidence;
+        document.querySelector('[data-track-tip]').textContent = reason + '。' + (direction === '保持'
+          ? '后续测试继续使用当前灵敏度。'
+          : '已自动' + direction + '约 ' + change + '%，后续测试将使用灵敏度 ' + formatSensitivity(appliedSensitivity) + '。');
+        document.querySelector('[data-track-settings]').textContent = '本项稳定区间：' + formatSensitivity(plateau[0].sensitivity) + '–' + formatSensitivity(plateau.at(-1).sensitivity) + '；移动跟枪将占最终综合结果的 20%。';
+        const rows = summaries.sort((a, b) => a.sensitivity - b.sensitivity).map((item) => {
+          const row = document.createElement('div');
+          row.className = 'candidate-result-row' + (item === best ? ' best' : '');
+          [item.label, '灵敏度 ' + formatSensitivity(item.sensitivity), item.score + ' 分', item.onTargetRate + '% 贴合', item.error.toFixed(1) + ' px 偏差'].forEach((text, index) => {
+            const cell = document.createElement(index === 1 ? 'strong' : 'span');
+            cell.textContent = text;
+            row.append(cell);
+          });
+          return row;
+        });
+        document.querySelector('[data-track-results]').replaceChildren(...rows);
+        restoreTrackButton.hidden = direction === '保持';
+        restoreTrackButton.dataset.sensitivity = settings.sensitivity;
+        restoreTrackButton.textContent = '使用原值 ' + formatSensitivity(settings.sensitivity) + ' 并继续';
+        sensInput.value = formatSensitivity(appliedSensitivity);
+        renderSettings();
+        localStorage.setItem('proaim-tracking-result', JSON.stringify({ sensitivity: appliedSensitivity, previousSensitivity: settings.sensitivity, score: best.score, confidence, range: [plateau[0].sensitivity, plateau.at(-1).sensitivity] }));
+        markTestComplete('track');
+        trackResult.classList.add('show');
+      };
+
+      const prepareTrack = () => {
+        const settings = getSettings();
+        if (!settings) return false;
+        resetTrack();
+        trackCandidates = getCandidates(settings.sensitivity)
+          .sort(() => Math.random() - 0.5)
+          .map((sensitivity, index) => ({ sensitivity, label: String.fromCharCode(65 + index) }));
+        trackIntro.style.display = 'none';
+        trackStageWrap.classList.add('active');
+        return true;
+      };
+      const startTrack = async () => {
+        if (!prepareTrack()) return;
+        const locked = await requestPointerLock(trackStage);
+        if (!locked) {
+          resetTrack();
+          trackLockError.hidden = false;
+          showToast('无法锁定鼠标，本测试需要使用最新版 Chrome 或 Edge。');
+          return;
+        }
+        trackLockError.hidden = true;
+        startTrackCandidate();
+      };
+
+      const resultDefinitions = [
+        { mode: 'micro', name: '微调控制', key: 'proaim-micro-result', weight: 0.30 },
+        { mode: 'track', name: '移动跟枪', key: 'proaim-tracking-result', weight: 0.20 },
+        { mode: 'transfer', name: '目标转移', key: 'proaim-transfer-result', weight: 0.30 },
+        { mode: 'stop', name: '急停点射', key: 'proaim-stop-result', weight: 0.15 },
+        { mode: 'turn', name: '180°转身', key: 'proaim-turn-result', weight: 0.05 }
+      ];
+      const readStoredResult = (key) => {
+        try {
+          const result = JSON.parse(localStorage.getItem(key) || 'null');
+          return result && Number.isFinite(result.sensitivity) && ['高', '中', '低'].includes(result.confidence) && Array.isArray(result.range) && result.range.length === 2 && result.range.every(Number.isFinite) ? result : null;
+        } catch { return null; }
+      };
+      const markTestComplete = (mode) => {
+        const card = document.querySelector('[data-test="' + mode + '"]');
+        if (card) card.querySelector('.status').textContent = '已完成';
+        if (resultDefinitions.every((item) => readStoredResult(item.key))) document.querySelector('[data-test="final"] .status').textContent = '可查看';
+      };
+      const combineResults = (results) => {
+        const confidenceFactor = { '高': 1, '中': .7, '低': .4 };
+        const weighted = results.map((item) => ({ ...item, adjustedWeight: item.weight * confidenceFactor[item.result.confidence] }));
+        const totalWeight = weighted.reduce((sum, item) => sum + item.adjustedWeight, 0);
+        let recommendation = Math.exp(weighted.reduce((sum, item) => sum + Math.log(item.result.sensitivity) * item.adjustedWeight, 0) / totalWeight);
+        const micro = results.find((item) => item.mode === 'micro').result;
+        const turn = results.find((item) => item.mode === 'turn').result;
+        const gateConflict = turn.range[0] > micro.range[1];
+        if (!gateConflict) recommendation = Math.max(turn.range[0], Math.min(micro.range[1], recommendation));
+        const spread = Math.sqrt(weighted.reduce((sum, item) => sum + Math.pow(Math.log(item.result.sensitivity / recommendation), 2) * item.adjustedWeight, 0) / totalWeight);
+        const confidenceAverage = results.reduce((sum, item) => sum + item.weight * confidenceFactor[item.result.confidence], 0);
+        const confidence = !gateConflict && confidenceAverage >= .82 && spread <= Math.log(1.08) ? '高' : !gateConflict && confidenceAverage >= .58 && spread <= Math.log(1.14) ? '中' : '低';
+        const margin = confidence === '高' ? .04 : confidence === '中' ? .07 : .10;
+        let low = recommendation * (1 - margin), high = recommendation * (1 + margin);
+        if (!gateConflict) { low = Math.max(low, turn.range[0]); high = Math.min(high, micro.range[1]); }
+        return { recommendation: Number(formatSensitivity(recommendation)), confidence, low, high, gateConflict };
+      };
+      const average = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
+      const setAdvancedCrosshair = (x, y) => {
+        advancedX = Math.max(0.05, Math.min(0.95, x));
+        advancedY = Math.max(0.08, Math.min(0.88, y));
+        positionAimElement(advancedCrosshair, advancedX, advancedY, advancedStage);
+      };
+      const getAngleDelta = (target, current) => {
+        const raw = target - current;
+        const delta = ((raw + 180) % 360 + 360) % 360 - 180;
+        return delta === -180 && raw > 0 ? 180 : delta;
+      };
+      const renderTurnTarget = () => {
+        const delta = getAngleDelta(advancedTurnDirection * 180, advancedYaw);
+        positionAimElement(advancedTarget, .5 + Math.max(-1, Math.min(1, delta / 180)) * .43, .5, advancedStage);
+      };
+      const updateAdvancedPointerLockUI = () => {
+        const locked = document.pointerLockElement === advancedStage;
+        advancedLockHint.classList.toggle('hidden', locked);
+        document.querySelector('[data-advanced-input-mode]').textContent = locked ? 'Raw / Lock' : 'Pointer Lock required';
+      };
+      const resetAdvanced = () => {
+        cancelAnimationFrame(advancedFrame);
+        clearInterval(advancedBreakTimer);
+        if (document.pointerLockElement === advancedStage) document.exitPointerLock();
+        pressedKeys.clear();
+        advancedCandidates = [];
+        advancedResults = [];
+        advancedSequence = [];
+        advancedIndex = 0;
+        advancedRound = 0;
+        advancedMetrics = null;
+        advancedBreak.hidden = true;
+        advancedIntro.style.display = '';
+        advancedStageWrap.classList.remove('active');
+        advancedResult.classList.remove('show');
+        setAdvancedCrosshair(0.5, 0.5);
+        updateAdvancedPointerLockUI();
+      };
+      const openAdvanced = (mode) => {
+        const settings = renderSettings();
+        if (!settings) { showToast('请先填写有效的 DPI 和 CS2 灵敏度。'); return; }
+        advancedMode = mode;
+        advancedConfig = advancedConfigs[mode];
+        resetAdvanced();
+        document.querySelector('[data-advanced-kicker]').textContent = advancedConfig.kicker;
+        document.querySelector('[data-advanced-title]').textContent = advancedConfig.title;
+        document.querySelector('[data-advanced-heading]').textContent = advancedConfig.heading;
+        document.querySelector('[data-advanced-description]').textContent = advancedConfig.description;
+        document.querySelector('[data-advanced-rounds]').textContent = '5 × ' + advancedConfig.rounds;
+        document.querySelector('[data-advanced-metrics]').textContent = advancedConfig.metrics;
+        document.querySelector('[data-advanced-sens]').textContent = formatSensitivity(settings.sensitivity);
+        document.querySelector('[data-advanced-result-title]').textContent = advancedConfig.title;
+        advancedStage.dataset.hint = advancedConfig.hint;
+        advancedLockError.hidden = true;
+        stopLane.hidden = stopPlayer.hidden = mode !== 'stop';
+        turnArrow.hidden = mode !== 'turn';
+        advancedCue.hidden = mode !== 'stop';
+        advancedModal.classList.add('open');
+        document.body.classList.add('modal-open');
+        document.querySelector('[data-start-advanced]').focus();
+      };
+      const closeAdvanced = () => {
+        advancedModal.classList.remove('open');
+        document.body.classList.remove('modal-open');
+        resetAdvanced();
+      };
+      const buildAdvancedSequence = () => {
+        if (advancedMode === 'transfer') return [
+          { x: .18, y: .24 }, { x: .82, y: .70 }, { x: .24, y: .76 }, { x: .78, y: .20 }, { x: .15, y: .52 },
+          { x: .85, y: .45 }, { x: .31, y: .18 }, { x: .72, y: .78 }, { x: .20, y: .34 }, { x: .80, y: .60 }
+        ];
+        if (advancedMode === 'stop') return Array.from({ length: advancedConfig.rounds }, (_, index) => ({ direction: index % 2 ? 1 : -1, x: index % 2 ? .72 : .28, y: .32 + (index % 3) * .12 }));
+        return Array.from({ length: advancedConfig.rounds }, (_, index) => ({ direction: index % 2 ? -1 : 1 }));
+      };
+      const completeAdvancedCandidate = () => {
+        cancelAnimationFrame(advancedFrame);
+        advancedResults.push(advancedMetrics);
+        advancedIndex += 1;
+        if (advancedIndex >= totalCandidates) finishAdvanced();
+        else {
+          advancedMetrics = null;
+          advancedRound = 0;
+          advancedBreakTimer = startCandidateBreak(advancedBreak, advancedIndex, startAdvancedCandidate);
+        }
+      };
+      const startAdvancedRound = () => {
+        cancelAnimationFrame(advancedFrame);
+        if (advancedRound >= advancedConfig.rounds) { completeAdvancedCandidate(); return; }
+        advancedRound += 1;
+        const trial = advancedSequence[advancedRound - 1];
+        advancedPath = advancedCorrections = advancedLastProgress = advancedLastDelta = 0;
+        advancedRoundStartedAt = advancedLastFrame = performance.now();
+        document.querySelector('[data-advanced-phase]').textContent = advancedRound <= advancedConfig.warmups
+          ? '适应 ' + advancedRound + '/' + advancedConfig.warmups
+          : '正式 ' + (advancedRound - advancedConfig.warmups) + '/' + (advancedConfig.rounds - advancedConfig.warmups);
+        document.querySelector('[data-advanced-live]').textContent = '0.0s';
+        if (advancedMode === 'transfer') {
+          advancedTargetX = trial.x; advancedTargetY = trial.y;
+          positionAimElement(advancedTarget, trial.x, trial.y, advancedStage);
+          advancedStartX = advancedX; advancedStartY = advancedY;
+        } else if (advancedMode === 'stop') {
+          setAdvancedCrosshair(0.5, 0.52);
+          advancedTargetX = trial.x; advancedTargetY = trial.y;
+          positionAimElement(advancedTarget, trial.x, trial.y, advancedStage);
+          advancedStartX = advancedX; advancedStartY = advancedY;
+          stopDirection = trial.direction; stopPosition = 0.5; stopVelocity = stopMoved = stopReadyAt = stopAimClosingSpeed = 0; stopPreviousAimError = NaN; stopCountered = stopReleased = false;
+          pressedKeys.clear();
+          advancedCue.textContent = '按住 ' + (stopDirection < 0 ? 'A' : 'D') + ' 移动';
+          stopPlayer.style.left = '50%';
+        } else {
+          setAdvancedCrosshair(0.5, 0.5);
+          advancedYaw = advancedTurnPath = 0;
+          advancedTurnDirection = trial.direction;
+          turnArrow.textContent = trial.direction > 0 ? '→' : '←';
+          renderTurnTarget();
+        }
+        advancedFrame = requestAnimationFrame(runAdvancedFrame);
+      };
+      const startAdvancedCandidate = () => {
+        const block = advancedCandidates[advancedIndex];
+        advancedSensitivity = block.sensitivity;
+        advancedMetrics = { ...block, hits: 0, times: [], errors: [], efficiencies: [], corrections: [], stopQualities: [], countered: 0 };
+        advancedRound = 0;
+        setAdvancedCrosshair(0.5, 0.5);
+        document.querySelector('[data-advanced-label]').textContent = block.label;
+        document.querySelector('[data-advanced-index]').textContent = advancedIndex + 1;
+        startAdvancedRound();
+      };
+      const runAdvancedFrame = (now) => {
+        if (!advancedMetrics || document.pointerLockElement !== advancedStage) return;
+        const dt = Math.min(.05, (now - advancedLastFrame) / 1000);
+        advancedLastFrame = now;
+        if (advancedMode === 'stop') {
+          const input = (pressedKeys.has('KeyD') ? 1 : 0) - (pressedKeys.has('KeyA') ? 1 : 0);
+          stopVelocity = Math.max(-.7, Math.min(.7, stopVelocity + input * 2.8 * dt));
+          if (!input) stopVelocity *= Math.exp(-9 * dt);
+          stopPosition = Math.max(.10, Math.min(.90, stopPosition + stopVelocity * dt));
+          setAdvancedCrosshair(advancedX + getStopAimDrift(stopVelocity, dt), advancedY);
+          const { width, height } = getStageSize(advancedStage);
+          const aimError = Math.hypot((advancedX - advancedTargetX) * width, (advancedY - advancedTargetY) * height);
+          if (Number.isFinite(stopPreviousAimError)) {
+            const closingSpeed = Math.max(0, (stopPreviousAimError - aimError) / Math.max(.001, dt));
+            stopAimClosingSpeed = stopAimClosingSpeed * .7 + closingSpeed * .3;
+          }
+          stopPreviousAimError = aimError;
+          if (!stopReadyAt && input === stopDirection) stopMoved += Math.abs(stopVelocity * dt);
+          const predictedAimError = aimError - stopAimClosingSpeed * stopReactionLeadSeconds;
+          if (!stopReadyAt && stopMoved >= .012 && (predictedAimError <= stopCueTolerance || stopMoved >= .035)) {
+            stopReadyAt = now;
+            advancedCue.textContent = '急停：松开 ' + (stopDirection < 0 ? 'A' : 'D') + '，点按 ' + (stopDirection < 0 ? 'D' : 'A') + ' 后射击';
+          }
+          stopPlayer.style.left = (stopPosition * 100) + '%';
+        }
+        document.querySelector('[data-advanced-live]').textContent = ((now - advancedRoundStartedAt) / 1000).toFixed(1) + 's';
+        advancedFrame = requestAnimationFrame(runAdvancedFrame);
+      };
+      const handleAdvancedMouseMove = (event) => {
+        if (!advancedMetrics || document.pointerLockElement !== advancedStage) return;
+        if (advancedMode === 'turn') {
+          const degrees = event.movementX * advancedSensitivity * cs2MYaw;
+          advancedYaw += degrees;
+          advancedTurnPath += Math.abs(degrees);
+          if (Math.abs(degrees) > .03 && advancedLastDelta && Math.sign(degrees) !== Math.sign(advancedLastDelta)) advancedCorrections += 1;
+          if (Math.abs(degrees) > .03) advancedLastDelta = degrees;
+          renderTurnTarget();
+          return;
+        }
+        const { width, height } = getStageSize(advancedStage);
+        const aspect = width / height;
+        const verticalFov = 2 * Math.atan(Math.tan((horizontalFov * Math.PI / 180) / 2) / aspect) * 180 / Math.PI;
+        const previousX = advancedX, previousY = advancedY;
+        setAdvancedCrosshair(advancedX + event.movementX * advancedSensitivity * cs2MYaw / horizontalFov, advancedY + event.movementY * advancedSensitivity * cs2MYaw / verticalFov);
+        advancedPath += Math.hypot((advancedX - previousX) * width, (advancedY - previousY) * height);
+        const aimX = advancedTargetX - advancedStartX, aimY = advancedTargetY - advancedStartY;
+        const denominator = aimX * aimX + aimY * aimY;
+        const progress = denominator ? ((advancedX - advancedStartX) * aimX + (advancedY - advancedStartY) * aimY) / denominator : 0;
+        const delta = progress - advancedLastProgress;
+        if (Math.abs(delta) > .015) {
+          if (advancedLastDelta && delta * advancedLastDelta < 0) advancedCorrections += 1;
+          advancedLastDelta = delta; advancedLastProgress = progress;
+        }
+      };
+      const handleAdvancedShot = () => {
+        if (!advancedMetrics || document.pointerLockElement !== advancedStage) return;
+        if (advancedMode === 'stop' && !stopReadyAt) { showToast('先按提示完成移动，出现“急停”后再射击。'); return; }
+        const scored = advancedRound > advancedConfig.warmups;
+        const time = performance.now() - advancedRoundStartedAt;
+        if (scored && advancedMode === 'turn') {
+          const error = Math.abs(getAngleDelta(advancedTurnDirection * 180, advancedYaw));
+          advancedMetrics.hits += error <= 4 ? 1 : 0;
+          advancedMetrics.times.push(time); advancedMetrics.errors.push(error);
+          advancedMetrics.efficiencies.push(Math.min(1, 180 / Math.max(180, advancedTurnPath)));
+          advancedMetrics.corrections.push(advancedCorrections);
+        } else if (scored) {
+          const { width, height } = getStageSize(advancedStage);
+          const error = Math.hypot((advancedX - advancedTargetX) * width, (advancedY - advancedTargetY) * height);
+          advancedMetrics.hits += error <= 22 ? 1 : 0;
+          advancedMetrics.times.push(advancedMode === 'stop' ? performance.now() - stopReadyAt : time);
+          advancedMetrics.errors.push(error);
+          advancedMetrics.efficiencies.push(Math.min(1, Math.hypot((advancedTargetX - advancedStartX) * width, (advancedTargetY - advancedStartY) * height) / Math.max(1, advancedPath)));
+          advancedMetrics.corrections.push(advancedCorrections);
+          if (advancedMode === 'stop') {
+            advancedMetrics.stopQualities.push(1 - Math.min(1, Math.abs(stopVelocity) / .7));
+            advancedMetrics.countered += stopCountered ? 1 : 0;
+          }
+        }
+        startAdvancedRound();
+      };
+      const finishAdvanced = () => {
+        cancelAnimationFrame(advancedFrame);
+        advancedMetrics = null;
+        advancedStageWrap.classList.remove('active');
+        if (document.pointerLockElement === advancedStage) document.exitPointerLock();
+        updateAdvancedPointerLockUI();
+        const scoredRounds = advancedConfig.rounds - advancedConfig.warmups;
+        const summaries = advancedResults.map((result) => ({
+          ...result,
+          accuracy: Math.round(result.hits / scoredRounds * 100),
+          time: median(result.times),
+          error: median(result.errors),
+          efficiency: average(result.efficiencies),
+          correction: median(result.corrections),
+          stopQuality: result.stopQualities.length ? average(result.stopQualities) : 0,
+          counterRate: result.stopQualities.length ? Math.round(result.countered / scoredRounds * 100) : 0
+        }));
+        const times = summaries.map((item) => item.time), errors = summaries.map((item) => item.error), corrections = summaries.map((item) => item.correction);
+        summaries.forEach((item) => {
+          if (advancedMode === 'transfer') item.score = Math.round(item.accuracy * .30 + normalizeLower(times, item.time) * .25 + normalizeLower(errors, item.error) * .20 + item.efficiency * 15 + normalizeLower(corrections, item.correction) * .10);
+          else if (advancedMode === 'stop') item.score = Math.round(item.accuracy * .30 + normalizeLower(times, item.time) * .20 + item.stopQuality * 25 + normalizeLower(errors, item.error) * .15 + item.counterRate * .10);
+          else item.score = Math.round(Math.max(0, 100 - item.error / 12 * 100) * .40 + normalizeLower(times, item.time) * .15 + item.efficiency * 30 + normalizeLower(corrections, item.correction) * .15);
+        });
+        const ranked = [...summaries].sort((a, b) => b.score - a.score);
+        const best = ranked[0], gap = best.score - ranked[1].score;
+        const quality = advancedMode === 'transfer' ? best.accuracy >= 75 : advancedMode === 'stop' ? best.accuracy >= 65 && best.counterRate >= 65 : best.error <= 8;
+        const confidence = gap >= 6 && quality ? '高' : gap >= 2 && quality ? '中' : '低';
+        const plateau = summaries.filter((item) => item.score >= best.score - 3).sort((a, b) => a.sensitivity - b.sensitivity);
+        const ratio = best.sensitivity / advancedBaseSettings.sensitivity;
+        const change = Math.round(Math.abs(ratio - 1) * 100);
+        const direction = ratio < .97 ? '降低' : ratio > 1.03 ? '提高' : '保持';
+        const appliedSensitivity = Number(formatSensitivity(best.sensitivity));
+        const reason = direction === '降低' ? advancedConfig.reasonDown : direction === '提高' ? advancedConfig.reasonUp : advancedConfig.reasonStay;
+        document.querySelector('[data-advanced-result-sens]').textContent = formatSensitivity(appliedSensitivity);
+        document.querySelector('[data-advanced-result-edpi]').textContent = Math.round(appliedSensitivity * advancedBaseSettings.dpi);
+        document.querySelector('[data-advanced-confidence]').textContent = confidence;
+        document.querySelector('[data-advanced-tip]').textContent = reason + '。' + (advancedMode === 'turn'
+          ? '推荐值已应用，可直接查看五项综合结果。'
+          : direction === '保持' ? '后续测试继续使用当前灵敏度。' : '已自动' + direction + '约 ' + change + '%，后续测试将使用灵敏度 ' + formatSensitivity(appliedSensitivity) + '。');
+        document.querySelector('[data-advanced-settings]').textContent = '本项稳定区间：' + formatSensitivity(plateau[0].sensitivity) + '–' + formatSensitivity(plateau.at(-1).sensitivity) + '；综合权重 ' + Math.round(advancedConfig.weight * 100) + '%。';
+        const rows = summaries.sort((a, b) => a.sensitivity - b.sensitivity).map((item) => {
+          const row = document.createElement('div');
+          row.className = 'candidate-result-row' + (item === best ? ' best' : '');
+          const detail = advancedMode === 'turn' ? item.error.toFixed(1) + '° 误差' : advancedMode === 'stop' ? item.counterRate + '% 反向急停' : item.accuracy + '% 首发';
+          [item.label, '灵敏度 ' + formatSensitivity(item.sensitivity), item.score + ' 分', detail, (item.time / 1000).toFixed(2) + 's'].forEach((text, index) => {
+            const cell = document.createElement(index === 1 ? 'strong' : 'span'); cell.textContent = text; row.append(cell);
+          });
+          return row;
+        });
+        document.querySelector('[data-advanced-results]').replaceChildren(...rows);
+        const finalStep = advancedMode === 'turn';
+        document.querySelector('[data-continue-advanced]').textContent = finalStep ? '查看综合结果' : '使用推荐值并继续';
+        document.querySelector('[data-exit-advanced]').hidden = !finalStep;
+        restoreAdvancedButton.hidden = finalStep || direction === '保持';
+        restoreAdvancedButton.dataset.sensitivity = advancedBaseSettings.sensitivity;
+        restoreAdvancedButton.textContent = '使用原值 ' + formatSensitivity(advancedBaseSettings.sensitivity) + ' 并继续';
+        sensInput.value = formatSensitivity(appliedSensitivity);
+        renderSettings();
+        localStorage.setItem(advancedConfig.key, JSON.stringify({ sensitivity: appliedSensitivity, previousSensitivity: advancedBaseSettings.sensitivity, score: best.score, confidence, range: [plateau[0].sensitivity, plateau.at(-1).sensitivity] }));
+        markTestComplete(advancedMode);
+        advancedResult.classList.add('show');
+      };
+      const prepareAdvanced = () => {
+        advancedBaseSettings = getSettings();
+        if (!advancedBaseSettings) return false;
+        resetAdvanced();
+        advancedSequence = buildAdvancedSequence();
+        advancedCandidates = getCandidates(advancedBaseSettings.sensitivity).sort(() => Math.random() - .5).map((sensitivity, index) => ({ sensitivity, label: String.fromCharCode(65 + index) }));
+        advancedIntro.style.display = 'none';
+        advancedStageWrap.classList.add('active');
+        return true;
+      };
+      const startAdvanced = async () => {
+        if (!prepareAdvanced()) return;
+        const locked = await requestPointerLock(advancedStage);
+        if (!locked) {
+          resetAdvanced(); advancedLockError.hidden = false;
+          showToast('无法锁定鼠标，本测试需要使用最新版 Chrome 或 Edge。'); return;
+        }
+        advancedLockError.hidden = true;
+        startAdvancedCandidate();
+      };
+      const openFinal = () => {
+        const settings = renderSettings();
+        if (!settings) return;
+        const results = resultDefinitions.map((definition) => ({ ...definition, result: readStoredResult(definition.key) }));
+        const missing = results.filter((item) => !item.result);
+        if (missing.length) { showToast('还需完成：' + missing.map((item) => item.name).join('、')); return; }
+        const { recommendation, confidence, low, high, gateConflict } = combineResults(results);
+        document.querySelector('[data-final-sens]').textContent = formatSensitivity(recommendation);
+        document.querySelector('[data-final-edpi]').textContent = Math.round(recommendation * settings.dpi);
+        document.querySelector('[data-final-confidence]').textContent = confidence;
+        document.querySelector('[data-final-range]').textContent = formatSensitivity(low) + '–' + formatSensitivity(high);
+        document.querySelector('[data-final-tip]').textContent = gateConflict ? '微调控制的精度上限与 180°转身下限发生冲突，建议重测这两项。' : confidence === '高' ? '五项结果彼此一致，推荐值已通过精度上限与 180°转身下限检查。' : '结果已综合计算，但测试间差异较大；优先重测置信度最低的项目可提高可靠性。';
+        const rows = results.map((item) => {
+          const row = document.createElement('div'); row.className = 'final-row';
+          [item.name, formatSensitivity(item.result.sensitivity) + '（' + Math.round(item.weight * 100) + '%）', item.result.confidence + '置信'].forEach((text, index) => { const cell = document.createElement(index === 0 ? 'strong' : 'span'); cell.textContent = text; row.append(cell); });
+          return row;
+        });
+        document.querySelector('[data-final-breakdown]').replaceChildren(...rows);
+        sensInput.value = formatSensitivity(recommendation);
+        renderSettings();
+        localStorage.setItem('proaim-final-result', JSON.stringify({ sensitivity: recommendation, confidence, range: [low, high] }));
+        finalModal.classList.add('open'); document.body.classList.add('modal-open');
+      };
+      const closeFinal = () => { finalModal.classList.remove('open'); document.body.classList.remove('modal-open'); };
+      const transitionFlow = {
+        micro: { current: '微调控制', next: '移动跟枪', nextMode: 'track', close: closeMicro },
+        track: { current: '移动跟枪', next: '目标转移', nextMode: 'transfer', close: closeTrack },
+        transfer: { current: '目标转移', next: '急停点射', nextMode: 'stop', close: closeAdvanced },
+        stop: { current: '急停点射', next: '180°转身', nextMode: 'turn', close: closeAdvanced },
+        turn: { current: '180°转身', next: '综合结果', nextMode: 'final', close: closeAdvanced }
+      };
+      const closeTestTransition = () => {
+        clearInterval(transitionTimer);
+        testTransition.classList.remove('open');
+        document.body.classList.remove('modal-open');
+        if (transitionAbort) transitionAbort();
+        transitionAbort = null;
+      };
+      const startTestTransition = async (mode, usedOriginal) => {
+        const flow = transitionFlow[mode];
+        flow.close();
+        let launch;
+        if (flow.nextMode === 'track') {
+          openTrack();
+          if (!prepareTrack()) return;
+          launch = { stage: trackStage, start: startTrackCandidate, fail: () => { resetTrack(); trackLockError.hidden = false; }, abort: closeTrack };
+        } else if (flow.nextMode !== 'final') {
+          openAdvanced(flow.nextMode);
+          if (!prepareAdvanced()) return;
+          launch = { stage: advancedStage, start: startAdvancedCandidate, fail: () => { resetAdvanced(); advancedLockError.hidden = false; }, abort: closeAdvanced };
+        }
+        document.querySelector('[data-transition-status]').textContent = flow.current + '已完成';
+        document.querySelector('[data-transition-next]').textContent = flow.next;
+        document.querySelector('[data-transition-choice]').textContent = (usedOriginal ? '原始' : '推荐') + '灵敏度 ' + formatSensitivity(Number(sensInput.value)) + ' 已应用。';
+        let remaining = crossTestTransitionSeconds;
+        document.querySelector('[data-transition-count]').textContent = remaining;
+        testTransition.classList.add('open');
+        document.body.classList.add('modal-open');
+        transitionAbort = launch?.abort || null;
+        if (launch && !await requestPointerLock(launch.stage)) {
+          transitionAbort = null;
+          closeTestTransition();
+          launch.fail();
+          document.body.classList.add('modal-open');
+          showToast('无法锁定鼠标，请在下一项说明页点击“开始测试”。');
+          return;
+        }
+        clearInterval(transitionTimer);
+        transitionTimer = setInterval(() => {
+          remaining -= 1;
+          document.querySelector('[data-transition-count]').textContent = remaining;
+          if (remaining > 0) return;
+          transitionAbort = null;
+          closeTestTransition();
+          if (launch) {
+            document.body.classList.add('modal-open');
+            launch.start();
+          } else openFinal();
+        }, 1000);
+      };
+      const dispatchAimMovement = (event) => {
+        const coalesced = typeof event.getCoalescedEvents === 'function' ? event.getCoalescedEvents() : [];
+        const samples = coalesced.length ? coalesced : [event];
+        const movement = samples.reduce((total, sample) => ({ movementX: total.movementX + sample.movementX, movementY: total.movementY + sample.movementY }), { movementX: 0, movementY: 0 });
+        handleMicroMouseMove(movement);
+        handleTrackMouseMove(movement);
+        handleAdvancedMouseMove(movement);
+      };
+      const testNames = { micro: '微调控制', track: '移动跟枪', transfer: '目标转移', stop: '急停点射', turn: '180°转身', final: '综合结果' };
+      const openRequestedTest = (mode) => {
+        if (mode === 'micro') openMicro();
+        else if (mode === 'track') openTrack();
+        else if (mode === 'final') openFinal();
+        else openAdvanced(mode);
+      };
+      const requestTest = (mode = 'micro') => {
+        pendingTestMode = mode;
+        if (renderSettings()) {
+          settingsPrompt.hidden = true;
+          settingsStartButton.hidden = true;
+          openRequestedTest(mode);
+          return;
+        }
+        settingsPrompt.textContent = (savedContent['settings-gate-prompt'] ?? defaultContent['settings-gate-prompt']).replace('微调控制', testNames[mode]);
+        settingsStartButton.textContent = (savedContent['settings-gate-button'] ?? defaultContent['settings-gate-button']).replace('微调控制', testNames[mode]);
+        settingsPrompt.hidden = false;
+        settingsStartButton.hidden = false;
+        settingsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        requestAnimationFrame(() => dpiInput.focus({ preventScroll: true }));
+        showToast('请先填写基础 DPI 和 CS2 灵敏度。');
+      };
+      if ('onpointerrawupdate' in window) document.addEventListener('pointerrawupdate', (event) => { lastRawMoveAt = performance.now(); dispatchAimMovement(event); }, { passive: true });
+      document.addEventListener('mousemove', (event) => {
+        if ('onpointerrawupdate' in window && performance.now() - lastRawMoveAt < 8) return;
+        dispatchAimMovement(event);
+      }, { passive: true });
+      document.addEventListener('pointerlockchange', updatePointerLockUI);
+      document.addEventListener('pointerlockchange', updateTrackPointerLockUI);
+      document.addEventListener('pointerlockchange', updateAdvancedPointerLockUI);
+
+      document.querySelectorAll('[data-start-calibration]').forEach((button) => button.addEventListener('click', (event) => {
+        event.preventDefault();
+        requestTest('micro');
+      }));
+      document.querySelectorAll('[data-test]').forEach((card) => {
+        const request = () => requestTest(card.dataset.test);
+        card.addEventListener('click', request);
+        card.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); request(); }
+        });
+      });
+      settingsStartButton.addEventListener('click', () => {
+        if (!renderSettings()) {
+          showToast('请输入有效的 DPI（100–3200）和 CS2 灵敏度（0.01–10）。');
+          (dpiInput.checkValidity() ? sensInput : dpiInput).focus();
+          return;
+        }
+        settingsPrompt.hidden = true;
+        settingsStartButton.hidden = true;
+        openRequestedTest(pendingTestMode);
+      });
+      document.querySelector('[data-start-micro]').addEventListener('click', startMicro);
+      document.querySelector('[data-restart-micro]').addEventListener('click', startMicro);
+      document.querySelector('[data-continue-micro]').addEventListener('click', () => startTestTransition('micro', false));
+      restoreMicroButton.addEventListener('click', () => {
+        sensInput.value = formatSensitivity(restoreMicroButton.dataset.sensitivity);
+        renderSettings();
+        startTestTransition('micro', true);
+      });
+      document.querySelectorAll('[data-close-micro]').forEach((button) => button.addEventListener('click', closeMicro));
+      microModal.addEventListener('click', (event) => { if (event.target === microModal) closeMicro(); });
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && microModal.classList.contains('open')) closeMicro(); });
+
+      document.querySelector('[data-start-track]').addEventListener('click', startTrack);
+      document.querySelector('[data-restart-track]').addEventListener('click', startTrack);
+      document.querySelector('[data-continue-track]').addEventListener('click', () => startTestTransition('track', false));
+      restoreTrackButton.addEventListener('click', () => {
+        sensInput.value = formatSensitivity(restoreTrackButton.dataset.sensitivity);
+        renderSettings();
+        startTestTransition('track', true);
+      });
+      document.querySelectorAll('[data-close-track]').forEach((button) => button.addEventListener('click', closeTrack));
+      trackModal.addEventListener('click', (event) => { if (event.target === trackModal) closeTrack(); });
+      trackStage.addEventListener('click', () => {
+        if (!trackMetrics || document.pointerLockElement === trackStage) return;
+        requestPointerLock(trackStage).then((locked) => locked ? startTrackCandidate() : resetTrack());
+      });
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && trackModal.classList.contains('open')) closeTrack(); });
+
+      document.querySelector('[data-start-advanced]').addEventListener('click', startAdvanced);
+      document.querySelector('[data-restart-advanced]').addEventListener('click', startAdvanced);
+      document.querySelector('[data-continue-advanced]').addEventListener('click', () => {
+        if (advancedMode !== 'turn') { startTestTransition(advancedMode, false); return; }
+        closeAdvanced();
+        openFinal();
+      });
+      document.querySelector('[data-exit-advanced]').addEventListener('click', closeAdvanced);
+      document.querySelectorAll('[data-close-advanced]').forEach((button) => button.addEventListener('click', closeAdvanced));
+      advancedModal.addEventListener('click', (event) => { if (event.target === advancedModal) closeAdvanced(); });
+      advancedStage.addEventListener('click', () => {
+        if (!advancedMetrics) return;
+        if (document.pointerLockElement === advancedStage) { handleAdvancedShot(); return; }
+        requestPointerLock(advancedStage).then((locked) => locked ? startAdvancedCandidate() : resetAdvanced());
+      });
+      restoreAdvancedButton.addEventListener('click', () => {
+        sensInput.value = formatSensitivity(restoreAdvancedButton.dataset.sensitivity);
+        renderSettings();
+        startTestTransition(advancedMode, true);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && advancedModal.classList.contains('open')) { closeAdvanced(); return; }
+        if (advancedMode !== 'stop' || !advancedMetrics || !['KeyA', 'KeyD'].includes(event.code)) return;
+        event.preventDefault();
+        pressedKeys.add(event.code);
+        const opposite = stopDirection < 0 ? 'KeyD' : 'KeyA';
+        if (stopReadyAt && stopReleased && event.code === opposite) stopCountered = true;
+      });
+      document.addEventListener('keyup', (event) => {
+        pressedKeys.delete(event.code);
+        if (advancedMode === 'stop' && advancedMetrics && stopReadyAt && event.code === (stopDirection < 0 ? 'KeyA' : 'KeyD')) stopReleased = true;
+      });
+
+      document.querySelectorAll('[data-close-final]').forEach((button) => button.addEventListener('click', closeFinal));
+      finalModal.addEventListener('click', (event) => { if (event.target === finalModal) closeFinal(); });
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && finalModal.classList.contains('open')) closeFinal(); });
+      document.querySelector('[data-cancel-transition]').addEventListener('click', closeTestTransition);
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && testTransition.classList.contains('open')) closeTestTransition(); });
+
+      const contentEditor = document.querySelector('[data-content-editor]');
+      const editorStatus = document.querySelector('[data-editor-status]');
+      const unregisteredText = [];
+      const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => node.textContent.trim() && !node.parentElement.closest('script, style, noscript, [data-content-editor], [data-edit-key], [aria-hidden="true"]') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+      });
+      while (textWalker.nextNode()) unregisteredText.push(textWalker.currentNode);
+      // ponytail: automatic keys follow DOM order; give frequently moved copy an explicit data-edit-key.
+      unregisteredText.forEach((node, index) => {
+        const element = node.parentElement;
+        if (element.childNodes.length === 1 && !element.matches('a, button')) element.dataset.editKey = 'auto-' + index;
+        else {
+          const wrapper = document.createElement('span');
+          wrapper.dataset.editKey = 'auto-' + index;
+          wrapper.textContent = node.textContent;
+          node.replaceWith(wrapper);
+        }
+      });
+      const editableContent = new Set(document.querySelectorAll('[data-edit-key]'));
+      const contentStorageKey = 'proaim-content';
+      const defaultContent = Object.fromEntries([...editableContent].map((element) => [element.dataset.editKey, element.textContent]));
+      let savedContent = {};
+      let editingContent = false;
+      let runtimeTextIndex = 0;
+      try { savedContent = JSON.parse(localStorage.getItem(contentStorageKey) || '{}'); } catch { savedContent = {}; }
+      const attachEditable = (element, key, fallback) => {
+        element.dataset.editKey = key;
+        if (!(key in defaultContent)) defaultContent[key] = fallback;
+        editableContent.add(element);
+        if (typeof savedContent[key] === 'string') element.textContent = savedContent[key];
+        element.toggleAttribute('contenteditable', editingContent);
+      };
+      const registerRuntimeText = (node) => {
+        if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) return;
+        const element = node.parentElement;
+        if (!element || element.closest('script, style, noscript, [data-content-editor], [data-edit-key], [aria-hidden="true"], #candidate-values, [data-candidate-results], [data-track-results], [data-advanced-results], [data-final-breakdown]')) return;
+        const scope = element.closest('[id]')?.id || element.classList[0] || 'page';
+        const binding = [...element.attributes].find(({ name }) => name.startsWith('data-') && name !== 'data-edit-key')?.name.slice(5);
+        const identity = binding || element.id || element.classList[0];
+        const key = 'runtime-' + scope + '-' + (identity || element.tagName.toLowerCase() + '-' + runtimeTextIndex++);
+        if (element.childNodes.length === 1 && !element.matches('a, button')) attachEditable(element, key, node.textContent);
+        else {
+          const wrapper = document.createElement('span');
+          node.replaceWith(wrapper);
+          wrapper.textContent = node.textContent;
+          attachEditable(wrapper, key, wrapper.textContent);
+        }
+      };
+      const runtimeTextObserver = new MutationObserver((records) => records.forEach((record) => {
+        if (record.type === 'characterData') registerRuntimeText(record.target);
+        record.addedNodes.forEach((added) => {
+          if (added.nodeType === Node.TEXT_NODE) registerRuntimeText(added);
+          else if (added.nodeType === Node.ELEMENT_NODE) {
+            const walker = document.createTreeWalker(added, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) registerRuntimeText(walker.currentNode);
+          }
+        });
+      }));
+      runtimeTextObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+      const applyContent = (content) => editableContent.forEach((element) => {
+        const value = content[element.dataset.editKey];
+        element.textContent = typeof value === 'string' ? value : defaultContent[element.dataset.editKey];
+      });
+      const readContent = () => ({ ...savedContent, ...Object.fromEntries([...editableContent].map((element) => [element.dataset.editKey, element.textContent])) });
+      const setEditingContent = (enabled) => {
+        editingContent = enabled;
+        document.body.classList.toggle('content-editing', enabled);
+        editableContent.forEach((element) => element.toggleAttribute('contenteditable', enabled));
+      };
+      applyContent(savedContent);
+      document.addEventListener('input', (event) => {
+        if (editingContent && event.target.closest?.('[data-edit-key]')) editorStatus.textContent = '有未保存修改';
+      });
+      document.addEventListener('keydown', (event) => {
+        if (!editingContent || !event.target.closest?.('[data-edit-key]')) return;
+        event.stopPropagation();
+        if (event.key === 'Enter') event.preventDefault();
+      }, true);
+      document.addEventListener('click', (event) => {
+        if (!editingContent || !event.target.closest('[data-edit-key]')) return;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+      document.querySelector('[data-editor-save]').addEventListener('click', () => {
+        savedContent = readContent();
+        localStorage.setItem(contentStorageKey, JSON.stringify(savedContent));
+        applyContent(savedContent);
+        editorStatus.textContent = '已保存到当前浏览器';
+      });
+      document.querySelector('[data-editor-undo]').addEventListener('click', () => {
+        applyContent(savedContent);
+        editorStatus.textContent = '已撤销未保存修改';
+      });
+      document.querySelector('[data-editor-reset]').addEventListener('click', () => {
+        if (!confirm('恢复所有默认文案？当前浏览器中保存的修改会被清除。')) return;
+        savedContent = {};
+        localStorage.removeItem(contentStorageKey);
+        applyContent(savedContent);
+        editorStatus.textContent = '已恢复默认文案';
+      });
+      document.querySelector('[data-editor-export]').addEventListener('click', () => {
+        const url = URL.createObjectURL(new Blob([JSON.stringify(readContent(), null, 2)], { type: 'application/json' }));
+        const link = document.createElement('a');
+        link.href = url; link.download = 'proaim-content.json'; link.click();
+        URL.revokeObjectURL(url);
+        editorStatus.textContent = 'JSON 已导出';
+      });
+      document.querySelector('[data-editor-exit]').addEventListener('click', () => {
+        setEditingContent(false);
+        contentEditor.hidden = true;
+        const url = new URL(location.href); url.searchParams.delete('edit'); history.replaceState(null, '', url);
+      });
+      if (new URLSearchParams(location.search).get('edit') === '1') {
+        contentEditor.hidden = false;
+        setEditingContent(true);
+      }
+      console.assert(editableContent.size && new Set([...editableContent].map((element) => element.dataset.editKey)).size === editableContent.size, 'Content editor keys must be unique');
+      console.assert(unregisteredText.every((node) => !node.isConnected || node.parentElement.closest('[data-edit-key]')), 'Every static text node must be editable');
+      console.assert(typeof registerRuntimeText === 'function' && runtimeTextObserver instanceof MutationObserver, 'Runtime text editor must be active');
+
+      const combinedCheck = combineResults(resultDefinitions.map((item) => ({ ...item, result: { sensitivity: 1, confidence: '高', range: [.95, 1.05] } })));
+      console.assert(Math.abs(resultDefinitions.reduce((sum, item) => sum + item.weight, 0) - 1) < .001 && getAngleDelta(180, 0) === 180 && combinedCheck.recommendation === 1 && combinedCheck.confidence === '高' && crossTestTransitionSeconds === 3 && getStopAimDrift(-.7, .1) < 0 && getStopAimDrift(.7, .1) > 0 && stopReactionLeadSeconds > .15 && stopReactionLeadSeconds < .3, 'Combined calibration check failed');
+      console.assert(getSettings() === null && dpiInput.value === '0' && sensInput.value === '0' && settingsStartButton.hidden, 'Initial settings gate failed');
+      resultDefinitions.forEach((item) => { if (readStoredResult(item.key)) markTestComplete(item.mode); });
+
+      document.querySelectorAll('.test-card:not([data-test])').forEach((card) => {
+        card.addEventListener('click', () => showToast('这个测试模块会在微调控制稳定后逐个开放。'));
+      });
+    </script>
+  </body>
+</html>
