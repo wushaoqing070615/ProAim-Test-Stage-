@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/supabase/:path*",
-      "destination": "https://ydgnjlmclxokfzwwxboy.supabase.co/:path*"
+      "destination": "https://ydqnjlmclxokfzwwxboy.supabase.co/:path*"
     }
   ]
 }
