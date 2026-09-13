@@ -64,6 +64,12 @@
       nav { display: flex; align-items: center; gap: 30px; color: var(--muted); font-size: 14px; }
       nav a:hover { color: var(--text); }
       .nav-cta { color: var(--accent); }
+      .auth-actions { display: flex; align-items: center; gap: 8px; }
+      .auth-button { min-height: 34px; padding: 0 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); background: transparent; cursor: pointer; font-size: 12px; }
+      .auth-button:hover { border-color: var(--accent); }
+      .auth-button-primary { color: #10150b; border-color: var(--accent); background: var(--accent); font-weight: 800; }
+      .auth-name { max-width: 110px; overflow: hidden; color: var(--accent); font: 700 12px ui-monospace, SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+      [hidden] { display: none !important; }
 
       .hero {
         min-height: 600px;
@@ -270,10 +276,28 @@
       .transition-panel p { margin: 0; color: var(--muted); font-size: 14px; }
       .transition-count { display: block; margin: 28px 0 10px; color: var(--accent); font: 800 76px/1 ui-monospace, SFMono-Regular, Consolas, monospace; }
       .transition-panel .micro-actions { justify-content: center; }
+      .auth-panel { width: min(440px, 100%); }
+      .auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+      .auth-tab { min-height: 42px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: #171e2a; cursor: pointer; }
+      .auth-tab.active { color: #10150b; border-color: var(--accent); background: var(--accent); font-weight: 800; }
+      .auth-form { display: grid; gap: 14px; }
+      .auth-field { display: grid; gap: 7px; color: var(--muted); font-size: 12px; }
+      .auth-input { width: 100%; min-height: 46px; padding: 0 13px; border: 1px solid #344052; border-radius: 9px; color: var(--text); background: #171e2a; font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .auth-input:focus { outline: 2px solid rgba(215, 248, 74, .35); border-color: var(--accent); }
+      .auth-help { margin: 0; color: var(--muted); font-size: 12px; }
+      .admin-panel { width: min(980px, 100%); }
+      .admin-summary { margin: -10px 0 18px; color: var(--muted); font-size: 13px; }
+      .admin-table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+      .admin-table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+      .admin-table th, .admin-table td { padding: 11px 13px; border-bottom: 1px solid var(--line); text-align: left; }
+      .admin-table th { color: var(--muted); background: #171e2a; }
+      .admin-table tr:last-child td { border-bottom: 0; }
+      .admin-table td:nth-child(n+3) { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      .admin-empty { padding: 28px !important; color: var(--muted); text-align: center !important; }
 
       footer { padding: 25px 0 35px; border-top: 1px solid rgba(255, 255, 255, .07); color: #667181; font-size: 12px; }
       .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-      .toast { position: fixed; right: 22px; bottom: 22px; z-index: 2; max-width: 300px; padding: 13px 16px; border: 1px solid #43516a; border-radius: 10px; color: var(--text); background: #171e2a; box-shadow: 0 18px 40px rgba(0, 0, 0, .3); font-size: 13px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s, transform .2s; }
+      .toast { position: fixed; right: 22px; bottom: 22px; z-index: 30; max-width: 300px; padding: 13px 16px; border: 1px solid #43516a; border-radius: 10px; color: var(--text); background: #171e2a; box-shadow: 0 18px 40px rgba(0, 0, 0, .3); font-size: 13px; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s, transform .2s; }
       .toast.show { opacity: 1; transform: translateY(0); }
       .content-editor { position: fixed; left: 18px; bottom: 18px; z-index: 20; width: min(420px, calc(100% - 36px)); padding: 14px; border: 1px solid #43516a; border-radius: 12px; background: rgba(17, 22, 32, .96); box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
       .content-editor[hidden] { display: none; }
@@ -290,7 +314,9 @@
       @media (max-width: 820px) {
         .shell { width: min(100% - 28px, 600px); }
         header { height: 70px; }
-        nav a:not(.nav-cta) { display: none; }
+        nav > a { display: none; }
+        nav { gap: 8px; }
+        .auth-name { max-width: 72px; }
         .hero { grid-template-columns: 1fr; gap: 35px; padding: 55px 0 60px; }
         .aim-visual { min-height: 320px; }
         .aim-card { width: min(330px, 88vw); }
@@ -323,6 +349,13 @@
           <a href="#tests" data-edit-key="nav-tests">测试项目</a>
           <a href="#method" data-edit-key="nav-method">测试逻辑</a>
           <a class="nav-cta" href="#tests" data-start-calibration>开始校准 <span aria-hidden="true">↗</span></a>
+          <div class="auth-actions">
+            <button class="auth-button" type="button" data-auth-open="login">登录</button>
+            <button class="auth-button auth-button-primary" type="button" data-auth-open="register">注册</button>
+            <span class="auth-name" data-auth-name data-auth-dynamic hidden></span>
+            <button class="auth-button" type="button" data-admin-open hidden>数据</button>
+            <button class="auth-button" type="button" data-auth-logout hidden>退出</button>
+          </div>
         </nav>
       </header>
 
@@ -336,7 +369,7 @@
               <a class="button button-primary" href="#tests" data-start-calibration>开始校准 <span aria-hidden="true">→</span></a>
               <a class="button button-ghost" href="#method">了解方法</a>
             </div>
-            <p class="hero-note" data-edit-key="hero-note">免费 · 无需注册 · 结果保存在本地浏览器</p>
+            <p class="hero-note" data-edit-key="hero-note-account">免费注册 · 自动保存完整校准结果</p>
           </div>
 
           <div class="aim-visual" aria-label="准星示意图">
@@ -613,6 +646,33 @@
         </div>
       </div>
 
+      <div class="micro-modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <div class="micro-panel auth-panel">
+          <div class="micro-header"><div><div class="section-kicker">PROAIM ACCOUNT</div><h2 id="auth-title">登录</h2></div><button class="close-button" type="button" data-auth-close aria-label="关闭账号窗口">×</button></div>
+          <div class="auth-tabs"><button class="auth-tab active" type="button" data-auth-mode="login">登录</button><button class="auth-tab" type="button" data-auth-mode="register">注册</button></div>
+          <form class="auth-form" data-auth-form>
+            <label class="auth-field"><span>用户 ID</span><input class="auth-input" name="username" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" autocomplete="username" required /></label>
+            <label class="auth-field"><span>密码</span><input class="auth-input" name="password" type="password" minlength="8" maxlength="72" autocomplete="current-password" required /></label>
+            <label class="auth-field" data-auth-confirm hidden><span>再次输入密码</span><input class="auth-input" name="confirm" type="password" minlength="8" maxlength="72" autocomplete="new-password" /></label>
+            <p class="auth-help" data-auth-help>登录后才能开始测试，完整系列结果会保存到你的账号。</p>
+            <button class="button button-primary" type="submit" data-auth-submit>登录</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="micro-modal" id="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+        <div class="micro-panel admin-panel">
+          <div class="micro-header"><div><div class="section-kicker">ADMIN ONLY</div><h2 id="admin-title">用户校准数据</h2></div><button class="close-button" type="button" data-admin-close aria-label="关闭数据窗口">×</button></div>
+          <p class="admin-summary" data-admin-summary data-auth-dynamic>正在读取数据……</p>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>用户 ID</th><th>时间</th><th>原始 DPI</th><th>原始灵敏度</th><th>最终灵敏度</th><th>状态</th></tr></thead>
+              <tbody data-admin-rows data-auth-dynamic></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <footer>
         <div class="footer-inner"><span data-edit-key="footer-copyright">© 2026 ProAim</span><span data-edit-key="footer-copy">为每一次微调，保留一点依据。</span></div>
       </footer>
@@ -631,6 +691,24 @@
 
     <script>
       const toast = document.querySelector('.toast');
+      // 在 Supabase 控制台的 Settings > API 中替换下面两项。
+      const SUPABASE_URL = location.hostname === 'localhost' ? 'https://proaim.cc.cd/supabase' : location.origin + '/supabase';
+      const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_lPhnXR2saeJfVfYc1Q1TWg_gyPKh5S2';
+      const databaseConfigured = !SUPABASE_URL.includes('YOUR_PROJECT') && !SUPABASE_PUBLISHABLE_KEY.includes('YOUR_PUBLISHABLE_KEY');
+      const authModal = document.querySelector('#auth-modal');
+      const authForm = document.querySelector('[data-auth-form]');
+      const authTitle = document.querySelector('#auth-title');
+      const authHelp = document.querySelector('[data-auth-help]');
+      const authConfirm = document.querySelector('[data-auth-confirm]');
+      const authSubmit = document.querySelector('[data-auth-submit]');
+      const authName = document.querySelector('[data-auth-name]');
+      const adminModal = document.querySelector('#admin-modal');
+      const authStorageKey = 'proaim-auth-session';
+      let authMode = 'login';
+      let authSession = null;
+      let authProfile = null;
+      let activeCalibrationId = null;
+      let resumeTestAfterAuth = false;
       const dpiInput = document.querySelector('#dpi-input');
       const sensInput = document.querySelector('#sens-input');
       const edpiValue = document.querySelector('#edpi-value');
@@ -772,6 +850,7 @@
       let transitionAbort;
       let lastRawMoveAt = 0;
       let pendingTestMode = 'micro';
+      let pendingForceNew = false;
       const pressedKeys = new Set();
       const stageSizes = new WeakMap();
 
@@ -819,6 +898,132 @@
         toast.classList.add('show');
         clearTimeout(showToast.timer);
         if (!editingContent) showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800);
+      };
+
+      const callSupabase = async (path, { method = 'GET', body, token = SUPABASE_PUBLISHABLE_KEY } = {}) => {
+        if (!databaseConfigured) throw new Error('数据库尚未连接');
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 12000);
+        try {
+          const response = await fetch(SUPABASE_URL + path, {
+            method,
+            signal: controller.signal,
+            headers: { apikey: SUPABASE_PUBLISHABLE_KEY, Authorization: 'Bearer ' + token, ...(body ? { 'Content-Type': 'application/json' } : {}), ...(path.startsWith('/rest/v1/') && body ? { Prefer: 'return=minimal' } : {}) },
+            body: body ? JSON.stringify(body) : undefined
+          });
+          const text = await response.text();
+          let data = null;
+          try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+          if (!response.ok) throw new Error(data?.msg || data?.message || data?.error_description || '请求失败（' + response.status + '）');
+          return data;
+        } catch (error) {
+          if (error.name === 'AbortError') throw new Error('连接数据库超时');
+          throw error;
+        } finally { clearTimeout(timeout); }
+      };
+      const saveSession = (data) => {
+        authSession = {
+          accessToken: data.access_token,
+          refreshToken: data.refresh_token,
+          expiresAt: data.expires_at ? data.expires_at * 1000 : Date.now() + data.expires_in * 1000,
+          userId: data.user.id
+        };
+        localStorage.setItem(authStorageKey, JSON.stringify(authSession));
+      };
+      const clearSession = () => {
+        authSession = null; authProfile = null; activeCalibrationId = null;
+        localStorage.removeItem(authStorageKey);
+      };
+      const getAccessToken = async () => {
+        if (!authSession) throw new Error('请先登录');
+        if (authSession.expiresAt > Date.now() + 60000) return authSession.accessToken;
+        const data = await callSupabase('/auth/v1/token?grant_type=refresh_token', { method: 'POST', body: { refresh_token: authSession.refreshToken } });
+        saveSession(data);
+        return authSession.accessToken;
+      };
+      const dataRequest = async (path, options = {}) => callSupabase('/rest/v1/' + path, { ...options, token: await getAccessToken() });
+      const isValidUserId = (value) => /^[A-Za-z0-9_]{3,24}$/.test(value);
+      const userIdToEmail = (value) => value.toLowerCase() + '@users.proaim.invalid';
+      const updateAuthUI = () => {
+        const signedIn = Boolean(authProfile);
+        document.querySelectorAll('[data-auth-open]').forEach((button) => { button.hidden = signedIn; });
+        authName.hidden = !signedIn;
+        authName.textContent = signedIn ? authProfile.username : '';
+        document.querySelector('[data-auth-logout]').hidden = !signedIn;
+        document.querySelector('[data-admin-open]').hidden = authProfile?.role !== 'admin';
+      };
+      const loadProfile = async () => {
+        const rows = await dataRequest('profiles?select=id,username,role&id=eq.' + encodeURIComponent(authSession.userId) + '&limit=1');
+        if (!rows?.[0]) throw new Error('账号资料不存在');
+        authProfile = rows[0];
+        updateAuthUI();
+      };
+      const setAuthMode = (mode) => {
+        authMode = mode;
+        const registering = mode === 'register';
+        authTitle.textContent = registering ? '注册' : '登录';
+        authSubmit.textContent = registering ? '创建账号' : '登录';
+        authHelp.textContent = registering ? 'ID 仅支持 3–24 位字母、数字和下划线；密码至少 8 位。' : '登录后才能开始测试，完整系列结果会保存到你的账号。';
+        authConfirm.hidden = !registering;
+        authConfirm.querySelector('input').required = registering;
+        authForm.password.autocomplete = registering ? 'new-password' : 'current-password';
+        document.querySelectorAll('[data-auth-mode]').forEach((tab) => tab.classList.toggle('active', tab.dataset.authMode === mode));
+      };
+      const openAuth = (mode = 'login') => {
+        if (!databaseConfigured) { showToast('账号数据库尚未配置，请管理员先完成连接。'); return; }
+        setAuthMode(mode);
+        authModal.classList.add('open'); document.body.classList.add('modal-open');
+        requestAnimationFrame(() => authForm.username.focus());
+      };
+      const closeAuth = () => { authModal.classList.remove('open'); document.body.classList.remove('modal-open'); authForm.reset(); };
+      const startCalibrationRecord = async (settings, forceNew = false) => {
+        if (activeCalibrationId && !forceNew) return;
+        resultDefinitions.forEach((item) => localStorage.removeItem(item.key));
+        localStorage.removeItem('proaim-final-result');
+        resultDefinitions.forEach((item) => { document.querySelector('[data-test="' + item.mode + '"] .status').textContent = '可体验'; });
+        document.querySelector('[data-test="final"] .status').textContent = '最终建议';
+        const id = crypto.randomUUID();
+        await dataRequest('calibration_runs', { method: 'POST', body: { id, user_id: authSession.userId, original_dpi: settings.dpi, original_sensitivity: settings.sensitivity } });
+        activeCalibrationId = id;
+      };
+      const completeCalibrationRecord = async (recommendation, settings) => {
+        if (!activeCalibrationId) return;
+        try {
+          await dataRequest('calibration_runs?id=eq.' + encodeURIComponent(activeCalibrationId), { method: 'PATCH', body: { recommended_sensitivity: recommendation, recommended_edpi: Math.round(recommendation * settings.dpi), completed_at: new Date().toISOString() } });
+          activeCalibrationId = null;
+          showToast('完整校准结果已保存到账号。');
+        } catch { showToast('结果已生成，但暂时无法保存，请保持页面开启后重试。'); }
+      };
+      const openAdmin = async () => {
+        if (authProfile?.role !== 'admin') return;
+        const summary = document.querySelector('[data-admin-summary]');
+        const body = document.querySelector('[data-admin-rows]');
+        adminModal.classList.add('open'); document.body.classList.add('modal-open');
+        summary.textContent = '正在读取数据……'; body.replaceChildren();
+        try {
+          // ponytail: first-batch view is capped at 500 runs; add pagination when the pilot exceeds that.
+          const [profiles, runs] = await Promise.all([
+            dataRequest('profiles?select=id,username'),
+            dataRequest('calibration_runs?select=id,user_id,started_at,original_dpi,original_sensitivity,recommended_sensitivity,completed_at&order=started_at.desc&limit=500')
+          ]);
+          const names = new Map(profiles.map((profile) => [profile.id, profile.username]));
+          const rows = runs.map((run) => {
+            const row = document.createElement('tr');
+            const values = [names.get(run.user_id) || '未知账号', new Date(run.started_at).toLocaleString('zh-CN'), run.original_dpi, Number(run.original_sensitivity).toFixed(2), Number(run.recommended_sensitivity).toFixed(2), run.completed_at ? '已完成' : '未完成'];
+            values.forEach((value) => { const cell = document.createElement('td'); cell.textContent = value; row.append(cell); });
+            return row;
+          });
+          if (!rows.length) { const row = document.createElement('tr'); const cell = document.createElement('td'); cell.colSpan = 6; cell.className = 'admin-empty'; cell.textContent = '暂无校准记录'; row.append(cell); rows.push(row); }
+          body.replaceChildren(...rows);
+          summary.textContent = '共 ' + runs.length + ' 次测试，其中 ' + runs.filter((run) => run.completed_at).length + ' 次已完成。';
+        } catch (error) { summary.textContent = '读取失败：' + error.message; }
+      };
+      const initializeAuth = async () => {
+        if (!databaseConfigured) { updateAuthUI(); return; }
+        try {
+          authSession = JSON.parse(localStorage.getItem(authStorageKey) || 'null');
+          if (authSession) { await getAccessToken(); await loadProfile(); }
+        } catch { clearSession(); updateAuthUI(); }
       };
 
       const getStageSize = (stage) => {
@@ -1719,6 +1924,7 @@
         sensInput.value = formatSensitivity(recommendation);
         renderSettings();
         localStorage.setItem('proaim-final-result', JSON.stringify({ sensitivity: recommendation, confidence, range: [low, high] }));
+        completeCalibrationRecord(recommendation, settings);
         finalModal.classList.add('open'); document.body.classList.add('modal-open');
       };
       const closeFinal = () => { finalModal.classList.remove('open'); document.body.classList.remove('modal-open'); };
@@ -1793,9 +1999,21 @@
         else if (mode === 'final') openFinal();
         else openAdvanced(mode);
       };
-      const requestTest = (mode = 'micro') => {
+      const requestTest = async (mode = 'micro', forceNew = false) => {
         pendingTestMode = mode;
-        if (renderSettings()) {
+        pendingForceNew = forceNew;
+        if (!authProfile) {
+          resumeTestAfterAuth = true;
+          openAuth('login');
+          showToast('请先登录或注册账号。');
+          return;
+        }
+        const settings = renderSettings();
+        if (settings) {
+          if (mode !== 'final') {
+            try { await startCalibrationRecord(settings, forceNew); }
+            catch (error) { showToast('无法创建测试记录：' + error.message); return; }
+          }
           settingsPrompt.hidden = true;
           settingsStartButton.hidden = true;
           openRequestedTest(mode);
@@ -1818,9 +2036,47 @@
       document.addEventListener('pointerlockchange', updateTrackPointerLockUI);
       document.addEventListener('pointerlockchange', updateAdvancedPointerLockUI);
 
+      document.querySelectorAll('[data-auth-open]').forEach((button) => button.addEventListener('click', () => { resumeTestAfterAuth = false; openAuth(button.dataset.authOpen); }));
+      document.querySelectorAll('[data-auth-mode]').forEach((button) => button.addEventListener('click', () => setAuthMode(button.dataset.authMode)));
+      document.querySelector('[data-auth-close]').addEventListener('click', closeAuth);
+      authModal.addEventListener('click', (event) => { if (event.target === authModal) closeAuth(); });
+      authForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!authForm.reportValidity()) return;
+        const form = new FormData(authForm);
+        const username = String(form.get('username')).trim();
+        const password = String(form.get('password'));
+        if (!isValidUserId(username)) { showToast('用户 ID 只能使用 3–24 位字母、数字和下划线。'); return; }
+        if (authMode === 'register' && username.toLowerCase() === 'bluestamp') { showToast('该管理员 ID 已保留。'); return; }
+        if (authMode === 'register' && password !== String(form.get('confirm'))) { showToast('两次输入的密码不一致。'); return; }
+        const email = userIdToEmail(username);
+        authSubmit.disabled = true;
+        try {
+          const data = authMode === 'register'
+            ? await callSupabase('/auth/v1/signup', { method: 'POST', body: { email, password, data: { username } } })
+            : await callSupabase('/auth/v1/token?grant_type=password', { method: 'POST', body: { email, password } });
+          if (!data?.access_token) throw new Error('请在 Supabase 中关闭邮箱确认后再注册');
+          saveSession(data);
+          await loadProfile();
+          const resume = resumeTestAfterAuth;
+          resumeTestAfterAuth = false;
+          closeAuth();
+          showToast(authMode === 'register' ? '账号已创建并登录。' : '登录成功。');
+          if (resume) requestTest(pendingTestMode, pendingForceNew);
+        } catch (error) { showToast('操作失败：' + error.message); }
+        finally { authSubmit.disabled = false; }
+      });
+      document.querySelector('[data-auth-logout]').addEventListener('click', async () => {
+        try { if (authSession) await callSupabase('/auth/v1/logout', { method: 'POST', token: await getAccessToken() }); } catch {}
+        clearSession(); updateAuthUI(); showToast('已退出登录。');
+      });
+      document.querySelector('[data-admin-open]').addEventListener('click', openAdmin);
+      document.querySelector('[data-admin-close]').addEventListener('click', () => { adminModal.classList.remove('open'); document.body.classList.remove('modal-open'); });
+      adminModal.addEventListener('click', (event) => { if (event.target === adminModal) { adminModal.classList.remove('open'); document.body.classList.remove('modal-open'); } });
+
       document.querySelectorAll('[data-start-calibration]').forEach((button) => button.addEventListener('click', (event) => {
         event.preventDefault();
-        requestTest('micro');
+        requestTest('micro', true);
       }));
       document.querySelectorAll('[data-test]').forEach((card) => {
         const request = () => requestTest(card.dataset.test);
@@ -1829,12 +2085,15 @@
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); request(); }
         });
       });
-      settingsStartButton.addEventListener('click', () => {
-        if (!renderSettings()) {
+      settingsStartButton.addEventListener('click', async () => {
+        const settings = renderSettings();
+        if (!settings) {
           showToast('请输入有效的 DPI（100–3200）和 CS2 灵敏度（0.01–10）。');
           (dpiInput.checkValidity() ? sensInput : dpiInput).focus();
           return;
         }
+        try { if (pendingTestMode !== 'final') await startCalibrationRecord(settings, pendingForceNew); }
+        catch (error) { showToast('无法创建测试记录：' + error.message); return; }
         settingsPrompt.hidden = true;
         settingsStartButton.hidden = true;
         openRequestedTest(pendingTestMode);
@@ -1941,7 +2200,7 @@
       const registerRuntimeText = (node) => {
         if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) return;
         const element = node.parentElement;
-        if (!element || element.closest('script, style, noscript, [data-content-editor], [data-edit-key], [aria-hidden="true"], #candidate-values, [data-candidate-results], [data-track-results], [data-advanced-results], [data-final-breakdown]')) return;
+        if (!element || element.closest('script, style, noscript, [data-content-editor], [data-edit-key], [data-auth-dynamic], [aria-hidden="true"], #candidate-values, [data-candidate-results], [data-track-results], [data-advanced-results], [data-final-breakdown]')) return;
         const scope = element.closest('[id]')?.id || element.classList[0] || 'page';
         const binding = [...element.attributes].find(({ name }) => name.startsWith('data-') && name !== 'data-edit-key')?.name.slice(5);
         const identity = binding || element.id || element.classList[0];
@@ -2029,7 +2288,10 @@
       const combinedCheck = combineResults(resultDefinitions.map((item) => ({ ...item, result: { sensitivity: 1, confidence: '高', range: [.95, 1.05] } })));
       console.assert(Math.abs(resultDefinitions.reduce((sum, item) => sum + item.weight, 0) - 1) < .001 && getAngleDelta(180, 0) === 180 && combinedCheck.recommendation === 1 && combinedCheck.confidence === '高' && crossTestTransitionSeconds === 3 && getStopAimDrift(-.7, .1) < 0 && getStopAimDrift(.7, .1) > 0 && stopReactionLeadSeconds > .15 && stopReactionLeadSeconds < .3, 'Combined calibration check failed');
       console.assert(getSettings() === null && dpiInput.value === '0' && sensInput.value === '0' && settingsStartButton.hidden, 'Initial settings gate failed');
+      console.assert(!databaseConfigured || ((SUPABASE_URL.startsWith('https://') || SUPABASE_URL.startsWith('/')) && SUPABASE_PUBLISHABLE_KEY.length > 20), 'Supabase configuration is invalid');
+      console.assert(isValidUserId('Player_01') && !isValidUserId('a b') && userIdToEmail('BlueStamp') === 'bluestamp@users.proaim.invalid', 'Account identity check failed');
       resultDefinitions.forEach((item) => { if (readStoredResult(item.key)) markTestComplete(item.mode); });
+      initializeAuth();
 
       document.querySelectorAll('.test-card:not([data-test])').forEach((card) => {
         card.addEventListener('click', () => showToast('这个测试模块会在微调控制稳定后逐个开放。'));
